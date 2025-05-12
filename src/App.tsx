@@ -6,8 +6,15 @@ import { UserShow } from "./pages/users/user-show";
 import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
+import { authProvider } from "./authProvider";
+
 export const App = () => (
-  <Admin layout={Layout} dataProvider={dataProvider} dashboard={HomePage}>
+  <Admin
+    layout={Layout}
+    dataProvider={dataProvider}
+    dashboard={HomePage}
+    authProvider={authProvider}
+  >
     <Resource
       icon={PersonIcon}
       name="users"
