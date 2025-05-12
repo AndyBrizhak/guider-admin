@@ -5,9 +5,9 @@ import { UserList } from "./pages/users/user-list";
 import { UserShow } from "./pages/users/user-show";
 import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
-
+import { HomePage } from "./pages/homepage";
 export const App = () => (
-  <Admin layout={Layout} dataProvider={dataProvider}>
+  <Admin layout={Layout} dataProvider={dataProvider} dashboard={HomePage}>
     <Resource
       icon={PersonIcon}
       name="users"
