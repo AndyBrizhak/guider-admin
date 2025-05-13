@@ -1,4 +1,5 @@
-import { DataProvider, fetchUtils } from "react-admin";
+import { DataProvider, fetchUtils, RaRecord } from "react-admin";
+import { UserRecord } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
 // export const dataProvider = jsonServerProvider(
@@ -65,8 +66,23 @@ export const dataProvider: DataProvider = {
   },
   delete: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
-    await fetchUtils.fetchJson(url, { method: "DELETE" });
-    return { data: params.previousData };
+    // await fetchUtils.fetchJson(url, { method: "DELETE" });
+    // return { data: (params.previousData || { id: params.id }) as UserRecord };
+
+    const response = await fetchUtils.fetchJson(url, { method: "DELETE" });
+
+    try {
+      // Пробуем получить данные из ответа сервера
+      const responseData = await response.json();
+      return { data: responseData };
+    } catch {
+      // Если сервер не возвращает данные или возвращает пустое тело ответа,
+      // используем previousData или просто возвращаем id
+      if (params.previousData) {
+        return { data: params.previousData };
+      }
+      return { data: { id: params.id } };
+    }
   },
   deleteMany: async (resource, params) => {
     const responses = await Promise.all(
@@ -77,5 +93,6 @@ export const dataProvider: DataProvider = {
       ),
     );
     return { data: responses.map((response) => response.json().id) };
+    // return { data: params.ids };
   },
 };
