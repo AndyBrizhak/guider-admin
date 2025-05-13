@@ -1,5 +1,5 @@
-import { DataProvider, fetchUtils, RaRecord } from "react-admin";
-import { UserRecord } from "./types";
+import { DataProvider, fetchUtils } from "react-admin";
+// import { UserRecord } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
 // export const dataProvider = jsonServerProvider(
@@ -19,23 +19,27 @@ export const dataProvider: DataProvider = {
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`Error fetching ${resource}: ${response.body}`);
     }
-    const data = await response.json();
-    return { data, total: data.length };
+    // const data = await response.json;
+    // const total = parseInt(response.headers.get("x-total-count"), 10);
+    return {
+      data: await response.json,
+      total: parseInt(response.headers.get("x-total-count") || "", 10),
+    };
   },
   getOne: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
     const response = await fetchUtils.fetchJson(url);
-    return { data: await response.json() };
+    return { data: await response.json };
   },
   getMany: async (resource, params) => {
     const url = `${API_URL}/${resource}?id=${params.ids.join(",")}`;
     const response = await fetchUtils.fetchJson(url);
-    return { data: await response.json() };
+    return { data: await response.json };
   },
   getManyReference: async (resource, params) => {
     const url = `${API_URL}/${resource}?${params.target}=${params.id}`;
     const response = await fetchUtils.fetchJson(url);
-    return { data: await response.json(), total: response.json().length };
+    return { data: await response.json, total: response.json.length };
   },
   update: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
@@ -43,7 +47,7 @@ export const dataProvider: DataProvider = {
       method: "PUT",
       body: JSON.stringify(params.data),
     });
-    return { data: await response.json() };
+    return { data: await response.json };
   },
   updateMany: async (resource, params) => {
     const responses = await Promise.all(
@@ -54,7 +58,7 @@ export const dataProvider: DataProvider = {
         }),
       ),
     );
-    return { data: responses.map((response) => response.json().id) };
+    return { data: responses.map((response) => response.json.id) };
   },
   create: async (resource, params) => {
     const url = `${API_URL}/${resource}`;
@@ -62,7 +66,7 @@ export const dataProvider: DataProvider = {
       method: "POST",
       body: JSON.stringify(params.data),
     });
-    return { data: await response.json() };
+    return { data: await response.json };
   },
   delete: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
@@ -73,7 +77,7 @@ export const dataProvider: DataProvider = {
 
     try {
       // Пробуем получить данные из ответа сервера
-      const responseData = await response.json();
+      const responseData = await response.json;
       return { data: responseData };
     } catch {
       // Если сервер не возвращает данные или возвращает пустое тело ответа,
@@ -92,7 +96,7 @@ export const dataProvider: DataProvider = {
         }),
       ),
     );
-    return { data: responses.map((response) => response.json().id) };
+    return { data: responses.map((response) => response.json.id) };
     // return { data: params.ids };
   },
 };

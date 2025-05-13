@@ -27,7 +27,7 @@ export const App = () => (
       name="users"
       list={ListGuesser}
       // list={UserList}
-      edit={EditGuesser}
+      // edit={EditGuesser}
       // edit={UserEdit}
       show={ShowGuesser}
       // show={UserShow}
