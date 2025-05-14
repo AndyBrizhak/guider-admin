@@ -1,19 +1,13 @@
-import {
-  Admin,
-  Create,
-  EditGuesser,
-  ListGuesser,
-  Resource,
-  ShowGuesser,
-} from "react-admin";
+import { Admin, Resource } from "react-admin";
 import { Layout } from "./Layout";
 import { dataProvider } from "./dataProvider";
-// import { UserList } from "./pages/users/user-list";
-// import { UserShow } from "./pages/users/user-show";
+import { UserList } from "./pages/users/user-list";
+
 // import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
+import { UserShow } from "./pages/users/user-show";
 
 export const App = () => (
   <Admin
@@ -25,12 +19,12 @@ export const App = () => (
     <Resource
       icon={PersonIcon}
       name="users"
-      list={ListGuesser}
-      // list={UserList}
+      //list={ListGuesser}
+      list={UserList}
       // edit={EditGuesser}
       // edit={UserEdit}
-      show={ShowGuesser}
-      // show={UserShow}
+      //show={ShowGuesser}
+      show={UserShow}
     />
   </Admin>
 );
