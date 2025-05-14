@@ -1,9 +1,9 @@
-import { Admin, Resource } from "react-admin";
+import { Admin, Resource, EditGuesser } from "react-admin";
 import { Layout } from "./Layout";
 import { dataProvider } from "./dataProvider";
 import { UserList } from "./pages/users/user-list";
 
-// import { UserEdit } from "./pages/users/user-edit";
+import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
@@ -22,7 +22,7 @@ export const App = () => (
       //list={ListGuesser}
       list={UserList}
       // edit={EditGuesser}
-      // edit={UserEdit}
+      edit={UserEdit}
       //show={ShowGuesser}
       show={UserShow}
     />
