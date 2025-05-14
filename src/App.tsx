@@ -2,7 +2,7 @@ import { Admin, Resource, EditGuesser } from "react-admin";
 import { Layout } from "./Layout";
 import { dataProvider } from "./dataProvider";
 import { UserList } from "./pages/users/user-list";
-
+import { UserCreate } from "./pages/users/user-create";
 import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
@@ -25,6 +25,7 @@ export const App = () => (
       edit={UserEdit}
       //show={ShowGuesser}
       show={UserShow}
+      create={UserCreate}
     />
   </Admin>
 );

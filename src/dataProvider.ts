@@ -66,7 +66,7 @@ export const dataProvider: DataProvider = {
       method: "POST",
       body: JSON.stringify(params.data),
     });
-    return { data: await response.json };
+    return { data: response.json };
   },
   delete: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
