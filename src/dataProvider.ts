@@ -19,8 +19,6 @@ export const dataProvider: DataProvider = {
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`Error fetching ${resource}: ${response.body}`);
     }
-    // const data = await response.json;
-    // const total = parseInt(response.headers.get("x-total-count"), 10);
     return {
       data: await response.json,
       total: parseInt(response.headers.get("x-total-count") || "", 10),
@@ -70,23 +68,8 @@ export const dataProvider: DataProvider = {
   },
   delete: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
-    // await fetchUtils.fetchJson(url, { method: "DELETE" });
-    // return { data: (params.previousData || { id: params.id }) as UserRecord };
-
     const response = await fetchUtils.fetchJson(url, { method: "DELETE" });
-
-    try {
-      // Пробуем получить данные из ответа сервера
-      const responseData = await response.json;
-      return { data: responseData };
-    } catch {
-      // Если сервер не возвращает данные или возвращает пустое тело ответа,
-      // используем previousData или просто возвращаем id
-      if (params.previousData) {
-        return { data: params.previousData };
-      }
-      return { data: { id: params.id } };
-    }
+    return { data: response.json };
   },
   deleteMany: async (resource, params) => {
     const responses = await Promise.all(
@@ -96,7 +79,6 @@ export const dataProvider: DataProvider = {
         }),
       ),
     );
-    return { data: responses.map((response) => response.json.id) };
-    // return { data: params.ids };
+    return { data: responses.map((response) => response.json) };
   },
 };
