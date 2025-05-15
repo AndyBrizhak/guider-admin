@@ -9,19 +9,34 @@ const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
 
 export const dataProvider: DataProvider = {
   getList: async (resource, params) => {
-    const url = `${API_URL}/${resource}`;
-    const { pagination, sort } = params;
+    const { pagination, sort, filter } = params;
     const { page, perPage } = pagination || { page: 1, perPage: 10 };
     const { field, order } = sort || { field: "id", order: "ASC" };
-    const response = await fetchUtils.fetchJson(
-      `${url}?page=${page}&perPage=${perPage}&sortField=${field}&sortOrder=${order}`,
-    );
+
+    // Формируем параметры фильтрации
+    const query = {
+      page,
+      perPage,
+      sortField: field,
+      sortOrder: order,
+      ...filter, // Добавляем фильтры из params.filter
+    };
+
+    // Преобразуем объект query в строку запроса
+    const queryString = new URLSearchParams(
+      query as Record<string, string>,
+    ).toString();
+    const url = `${API_URL}/${resource}?${queryString}`;
+
+    const response = await fetchUtils.fetchJson(url);
+
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`Error fetching ${resource}: ${response.body}`);
     }
+
     return {
-      data: await response.json,
-      total: parseInt(response.headers.get("x-total-count") || "", 10),
+      data: response.json,
+      total: parseInt(response.headers.get("x-total-count") || "0", 10),
     };
   },
   getOne: async (resource, params) => {
