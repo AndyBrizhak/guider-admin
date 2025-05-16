@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-key */
+
 import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
@@ -28,5 +31,15 @@ export const authProvider: AuthProvider = {
     return localStorage.getItem("username")
       ? Promise.resolve()
       : Promise.reject();
+  },
+
+  getPermissions() {
+    // Check if the user has the required permissions
+    const userPermissions = localStorage.getItem("permissions");
+    if (userPermissions) {
+      return Promise.resolve(userPermissions);
+    } else {
+      return Promise.reject();
+    }
   },
 };
