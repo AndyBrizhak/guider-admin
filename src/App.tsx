@@ -8,13 +8,17 @@ import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
 import { UserShow } from "./pages/users/user-show";
+//import MyLoginPage from "./MyLoginPage";
+import LoginWithRegister from "./pages/auth/login-wth-register.tsx";
 
 export const App = () => (
   <Admin
     layout={Layout}
     dataProvider={dataProvider}
     dashboard={HomePage}
+    loginPage={LoginWithRegister}
     authProvider={authProvider}
+    // requireAuth
   >
     <Resource
       icon={PersonIcon}

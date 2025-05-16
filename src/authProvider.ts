@@ -33,13 +33,13 @@ export const authProvider: AuthProvider = {
       : Promise.reject();
   },
 
-  getPermissions() {
-    // Check if the user has the required permissions
-    const userPermissions = localStorage.getItem("permissions");
-    if (userPermissions) {
-      return Promise.resolve(userPermissions);
-    } else {
-      return Promise.reject();
-    }
-  },
+  // getPermissions() {
+  //   // Check if the user has the required permissions
+  //   const userPermissions = localStorage.getItem("permissions");
+  //   if (userPermissions) {
+  //     return Promise.resolve(userPermissions);
+  //   } else {
+  //     return Promise.reject();
+  //   }
+  // },
 };
