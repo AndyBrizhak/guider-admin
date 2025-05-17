@@ -8,7 +8,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
 import { UserShow } from "./pages/users/user-show";
-//import MyLoginPage from "./MyLoginPage";
 import LoginWithRegister from "./pages/auth/login-wth-register.tsx";
 
 export const App = () => (
@@ -23,13 +22,11 @@ export const App = () => (
     <Resource
       icon={PersonIcon}
       name="users"
-      //list={ListGuesser}
       list={UserList}
-      // edit={EditGuesser}
       edit={UserEdit}
-      //show={ShowGuesser}
       show={UserShow}
       create={UserCreate}
+      options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
 );
