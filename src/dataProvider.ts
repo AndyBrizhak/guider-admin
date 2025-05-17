@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-key */
+
 import { DataProvider, fetchUtils } from "react-admin";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
