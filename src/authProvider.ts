@@ -45,14 +45,15 @@ export const authProvider: AuthProvider = {
   },
 
   // Called when an error occurs during API call
-  checkError: ({ status }: { status: number }) => {
-    if (status === 401 || status === 403) {
-      // Удаляем все данные аутентификации при ошибке авторизации
-      localStorage.removeItem("auth");
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
+  // checkError: ({ status }: { status: number }) => {
+  //   if (status === 401 || status === 403) {
+  //     // Удаляем все данные аутентификации при ошибке авторизации
+  //     localStorage.removeItem("auth");
+  //     return Promise.reject();
+  //   }
+  //   return Promise.resolve();
+  // },
+  checkError: () => Promise.resolve(),
 
   // Called when the user navigates to a new page
   checkAuth: () => {

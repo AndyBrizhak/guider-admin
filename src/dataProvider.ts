@@ -5,8 +5,8 @@ import { DataProvider, fetchUtils } from "react-admin";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
 
-// Кастомный httpClient для добавления токена авторизации
-const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+// Кастомный httpClient для добавления токена авторизации и обработки ошибок
+const httpClient = async (url: string, options: fetchUtils.Options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
@@ -16,7 +16,22 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     options.headers.set("Authorization", `Bearer ${token}`);
   }
 
-  return fetchUtils.fetchJson(url, options);
+  try {
+    const response = await fetchUtils.fetchJson(url, options);
+    return response;
+  } catch (error: any) {
+    // Перехват ошибки и переход на dashboard без logout
+    window.location.hash = "#/";
+    // Можно добавить уведомление, если нужно
+    // alert(error?.body || error?.message || "Server error");
+    // Возвращаем фиктивный ответ, чтобы не ломать dataProvider
+    return {
+      status: error.status || 500,
+      headers: new Headers(),
+      body: error.body || error.message || "Server error",
+      json: {},
+    };
+  }
 };
 
 export const dataProvider: DataProvider = {
@@ -25,26 +40,20 @@ export const dataProvider: DataProvider = {
     const { page, perPage } = pagination || { page: 1, perPage: 10 };
     const { field, order } = sort || { field: "id", order: "ASC" };
 
-    // Формируем параметры фильтрации
     const query = {
       page,
       perPage,
       sortField: field,
       sortOrder: order,
-      ...filter, // Добавляем фильтры из params.filter
+      ...filter,
     };
 
-    // Преобразуем объект query в строку запроса
     const queryString = new URLSearchParams(
       query as Record<string, string>,
     ).toString();
     const url = `${API_URL}/${resource}?${queryString}`;
 
     const response = await httpClient(url);
-
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`Error fetching ${resource}: ${response.body}`);
-    }
 
     return {
       data: response.json,
@@ -54,17 +63,17 @@ export const dataProvider: DataProvider = {
   getOne: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
     const response = await httpClient(url);
-    return { data: await response.json };
+    return { data: response.json };
   },
   getMany: async (resource, params) => {
     const url = `${API_URL}/${resource}?id=${params.ids.join(",")}`;
     const response = await httpClient(url);
-    return { data: await response.json };
+    return { data: response.json };
   },
   getManyReference: async (resource, params) => {
     const url = `${API_URL}/${resource}?${params.target}=${params.id}`;
     const response = await httpClient(url);
-    return { data: await response.json, total: response.json.length };
+    return { data: response.json, total: response.json.length };
   },
   update: async (resource, params) => {
     const url = `${API_URL}/${resource}/${params.id}`;
@@ -72,7 +81,7 @@ export const dataProvider: DataProvider = {
       method: "PUT",
       body: JSON.stringify(params.data),
     });
-    return { data: await response.json };
+    return { data: response.json };
   },
   updateMany: async (resource, params) => {
     const responses = await Promise.all(
