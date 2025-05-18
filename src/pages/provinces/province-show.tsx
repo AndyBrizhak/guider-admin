@@ -4,6 +4,7 @@ export const ProvinceShow = () => (
   <Show>
     <SimpleShowLayout>
       <TextField source="name" />
+      <TextField source="url" label="URL Slug" />
     </SimpleShowLayout>
   </Show>
 );
