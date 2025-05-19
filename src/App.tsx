@@ -6,6 +6,7 @@ import { UserCreate } from "./pages/users/user-create";
 import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import PublicIcon from "@mui/icons-material/Public"; // Иконка для провинций
+import LocationCityIcon from "@mui/icons-material/LocationCity"; // Иконка для городов
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
 import { UserShow } from "./pages/users/user-show";
@@ -15,6 +16,11 @@ import { ProvinceList } from "./pages/provinces/province-list";
 import { ProvinceCreate } from "./pages/provinces/province-create";
 import { ProvinceEdit } from "./pages/provinces/province-edit";
 import { ProvinceShow } from "./pages/provinces/province-show";
+// Импорт компонентов для городов
+import { CityList } from "./pages/cities/city-list";
+import { CityCreate } from "./pages/cities/city-create";
+import { CityEdit } from "./pages/cities/city-edit";
+import { CityShow } from "./pages/cities/city-show";
 
 export const App = () => (
   <Admin
@@ -41,6 +47,15 @@ export const App = () => (
       edit={ProvinceEdit}
       show={ProvinceShow}
       create={ProvinceCreate}
+      options={{ mutationMode: "pessimistic" }}
+    />
+    <Resource
+      icon={LocationCityIcon}
+      name="cities"
+      list={CityList}
+      edit={CityEdit}
+      show={CityShow}
+      create={CityCreate}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
