@@ -1,12 +1,4 @@
-import {
-  Show,
-  SimpleShowLayout,
-  TextField,
-  ReferenceField,
-  ArrayField,
-  SingleFieldList,
-  ChipField,
-} from "react-admin";
+import { Show, SimpleShowLayout, TextField } from "react-admin";
 
 export const CityShow = () => (
   <Show>
@@ -14,11 +6,8 @@ export const CityShow = () => (
       <TextField source="name" label="Название города" />
       <TextField source="url" label="URL Slug" />
       <TextField source="province" label="Провинция" />
-      <ArrayField source="location.coordinates" label="Координаты">
-        <SingleFieldList>
-          <ChipField source="" />
-        </SingleFieldList>
-      </ArrayField>
+      <TextField source="location.longitude" label="Долгота" />
+      <TextField source="location.latitude" label="Широта" />
     </SimpleShowLayout>
   </Show>
 );
