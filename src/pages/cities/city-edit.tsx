@@ -1,12 +1,4 @@
-import {
-  Edit,
-  SimpleForm,
-  TextInput,
-  regex,
-  ReferenceInput,
-  SelectInput,
-  NumberInput,
-} from "react-admin";
+import { Edit, SimpleForm, TextInput, regex, NumberInput } from "react-admin";
 
 const urlSlugValidator = [
   regex(
@@ -36,16 +28,15 @@ const latitudeValidator = [
 export const CityEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="name" validate={[]} label="Название города" />
+      <TextInput source="name" label="Название города" />
       <TextInput
         source="url"
         label="URL Slug"
         validate={urlSlugValidator}
         helperText="Часть URL для страниц, связанных с городом"
       />
-      <ReferenceInput source="province" reference="provinces">
-        <SelectInput optionText="name" label="Провинция" />
-      </ReferenceInput>
+
+      <TextInput source="province" label="Провинция" />
       <NumberInput
         source="location.coordinates[0]"
         label="Долгота (Longitude)"
