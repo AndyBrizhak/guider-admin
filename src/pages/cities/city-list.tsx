@@ -7,9 +7,6 @@ import {
   EditButton,
   TextInput,
   ShowButton,
-  ReferenceField,
-  ReferenceInput,
-  SelectInput,
   ArrayField,
   SingleFieldList,
   ChipField,
@@ -19,9 +16,7 @@ const cityFilters = [
   <TextInput label="Search" source="q" alwaysOn />,
   <TextInput label="Name" source="name" defaultValue="" />,
   <TextInput label="URL Slug" source="url" defaultValue="" />,
-  <ReferenceInput source="province" reference="provinces">
-    <SelectInput label="Province" optionText="name" />
-  </ReferenceInput>,
+  <TextInput label="Province" source="province" defaultValue="" />, // фильтр по названию провинции
 ];
 
 export const CityList = () => (
