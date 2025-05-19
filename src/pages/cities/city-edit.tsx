@@ -1,4 +1,11 @@
-import { Edit, SimpleForm, TextInput, regex, NumberInput } from "react-admin";
+import {
+  Edit,
+  SimpleForm,
+  TextInput,
+  regex,
+  NumberInput,
+  useRecordContext,
+} from "react-admin";
 
 const urlSlugValidator = [
   regex(
@@ -25,25 +32,62 @@ const latitudeValidator = [
   },
 ];
 
+// Кастомный компонент для NumberInput с динамическим placeholder
+const LongitudeInput = (props) => {
+  const record = useRecordContext();
+  return (
+    <NumberInput
+      {...props}
+      placeholder={
+        record?.location?.coordinates?.[0] !== undefined
+          ? String(record.location.coordinates[0])
+          : "-84.3845"
+      }
+    />
+  );
+};
+
+const LatitudeInput = (props) => {
+  const record = useRecordContext();
+  return (
+    <NumberInput
+      {...props}
+      placeholder={
+        record?.location?.coordinates?.[1] !== undefined
+          ? String(record.location.coordinates[1])
+          : "10.0973"
+      }
+    />
+  );
+};
+
 export const CityEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="name" label="Название города" />
+      <TextInput
+        source="name"
+        label="Название города"
+        placeholder="Введите название города"
+      />
       <TextInput
         source="url"
         label="URL Slug"
         validate={urlSlugValidator}
         helperText="Часть URL для страниц, связанных с городом"
+        placeholder="naranjo"
       />
-
-      <TextInput source="province" label="Провинция" />
-      <NumberInput
+      <TextInput
+        source="province"
+        label="Провинция"
+        placeholder="Например: Alajuela"
+      />
+      <LongitudeInput
         source="location.coordinates[0]"
         label="Долгота (Longitude)"
         validate={longitudeValidator}
         helperText="Значение от -180 до 180"
       />
-      <NumberInput
+      <LatitudeInput
         source="location.coordinates[1]"
         label="Широта (Latitude)"
         validate={latitudeValidator}
