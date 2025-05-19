@@ -25,11 +25,6 @@ export const CityList = () => (
       <TextField source="name" label="Name" />
       <TextField source="url" label="URL Slug" />
       <TextField source="province" label="Province" />
-      <ArrayField source="location.coordinates" label="Coordinates">
-        <SingleFieldList>
-          <ChipField source="" />
-        </SingleFieldList>
-      </ArrayField>
       <ShowButton label="Show" />
       <EditButton label="Edit" />
     </Datagrid>
