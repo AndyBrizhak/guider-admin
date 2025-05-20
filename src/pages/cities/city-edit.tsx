@@ -34,38 +34,28 @@ const latitudeValidator = [
 
 // Кастомный компонент для ввода долготы
 const LongitudeInput = (props) => {
-  const record = useRecordContext();
   return (
     <NumberInput
       {...props}
-      source="location.coordinates[0]"
+      source="location.coordinates.0"
       label="Долгота (Longitude)"
       validate={longitudeValidator}
       helperText="Значение от -180 до 180"
-      placeholder={
-        record?.location?.coordinates?.[0] !== undefined
-          ? String(record.location.coordinates[0])
-          : "-84.3845"
-      }
+      placeholder="-84.3845"
     />
   );
 };
 
 // Кастомный компонент для ввода широты
 const LatitudeInput = (props) => {
-  const record = useRecordContext();
   return (
     <NumberInput
       {...props}
-      source="location.coordinates[1]"
+      source="location.coordinates.1"
       label="Широта (Latitude)"
       validate={latitudeValidator}
       helperText="Значение от -90 до 90"
-      placeholder={
-        record?.location?.coordinates?.[1] !== undefined
-          ? String(record.location.coordinates[1])
-          : "10.0973"
-      }
+      placeholder="10.0973"
     />
   );
 };
