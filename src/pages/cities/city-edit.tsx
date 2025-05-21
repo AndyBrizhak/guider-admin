@@ -32,34 +32,6 @@ const latitudeValidator = [
   },
 ];
 
-// Кастомный компонент для ввода долготы
-const LongitudeInput = (props) => {
-  return (
-    <NumberInput
-      {...props}
-      source="location.coordinates.0"
-      label="Долгота (Longitude)"
-      validate={longitudeValidator}
-      helperText="Значение от -180 до 180"
-      placeholder="-84.3845"
-    />
-  );
-};
-
-// Кастомный компонент для ввода широты
-const LatitudeInput = (props) => {
-  return (
-    <NumberInput
-      {...props}
-      source="location.coordinates.1"
-      label="Широта (Latitude)"
-      validate={latitudeValidator}
-      helperText="Значение от -90 до 90"
-      placeholder="10.0973"
-    />
-  );
-};
-
 export const CityEdit = () => (
   <Edit>
     <SimpleForm>
@@ -80,8 +52,20 @@ export const CityEdit = () => (
         label="Провинция"
         placeholder="Например: Alajuela"
       />
-      <LongitudeInput />
-      <LatitudeInput />
+      <NumberInput
+        source="location.coordinates[0]"
+        label="Долгота (Longitude)"
+        validate={longitudeValidator}
+        helperText="Значение от -180 до 180"
+        //placeholder="-84.3845"
+      />
+      <NumberInput
+        source="location.coordinates[1]"
+        label="Широта (Latitude)"
+        validate={latitudeValidator}
+        helperText="Значение от -90 до 90"
+        //placeholder="10.0973"
+      />
     </SimpleForm>
   </Edit>
 );

@@ -7,7 +7,9 @@ import {
   ReferenceInput,
   SelectInput,
   NumberInput,
+  useGetList,
 } from "react-admin";
+import { useState, useEffect } from "react";
 
 const urlSlugValidator = [
   regex(
@@ -36,35 +38,57 @@ const latitudeValidator = [
   },
 ];
 
-export const CityCreate = () => (
-  <Create title="Create City" disableAuthentication>
-    <SimpleForm>
-      <TextInput source="name" validate={required()} label="Название города" />
-      <TextInput
-        source="url"
-        label="URL Slug"
-        validate={urlSlugValidator}
-        helperText="Часть URL для страниц, связанных с городом"
-      />
-      <ReferenceInput
-        source="province"
-        reference="provinces"
-        validate={required()}
-      >
-        <SelectInput optionText="name" label="Провинция" />
-      </ReferenceInput>
-      <NumberInput
-        source="location.coordinates[0]"
-        label="Долгота (Longitude)"
-        validate={longitudeValidator}
-        helperText="Значение от -180 до 180"
-      />
-      <NumberInput
-        source="location.coordinates[1]"
-        label="Широта (Latitude)"
-        validate={latitudeValidator}
-        helperText="Значение от -90 до 90"
-      />
-    </SimpleForm>
-  </Create>
-);
+export const CityCreate = () => {
+  // Получаем список провинций
+  const { data: provinces, isLoading } = useGetList("provinces", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
+
+  // Создаем массив опций для выпадающего списка
+  const provinceChoices =
+    provinces?.map((province) => ({
+      id: province.name,
+      name: province.name,
+    })) || [];
+
+  return (
+    <Create title="Create City" disableAuthentication>
+      <SimpleForm>
+        <TextInput
+          source="name"
+          validate={required()}
+          label="Название города"
+        />
+        <TextInput
+          source="url"
+          label="URL Slug"
+          validate={urlSlugValidator}
+          helperText="Часть URL для страниц, связанных с городом"
+        />
+        {!isLoading && (
+          <SelectInput
+            source="province"
+            choices={provinceChoices}
+            validate={required()}
+            label="Провинция"
+            optionText="name"
+            optionValue="id"
+          />
+        )}
+        <NumberInput
+          source="location.coordinates[0]"
+          label="Долгота (Longitude)"
+          validate={longitudeValidator}
+          helperText="Значение от -180 до 180"
+        />
+        <NumberInput
+          source="location.coordinates[1]"
+          label="Широта (Latitude)"
+          validate={latitudeValidator}
+          helperText="Значение от -90 до 90"
+        />
+      </SimpleForm>
+    </Create>
+  );
+};
