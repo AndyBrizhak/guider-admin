@@ -14,9 +14,9 @@ export const CityShow = () => (
         <TextField source="url" label="URL Slug" />
         <TextField source="province" label="Провинция" />
       </Tab>
-      <Tab label="Гео">
-        <NumberField source="location.coordinates[0]" label="Долгота" />
-        <NumberField source="location.coordinates[1]" label="Широта" />
+      <Tab label="Geo">
+        <NumberField source="location.longitude" label="Longitude" />
+        <NumberField source="location.latitude" label="Latitude" />
       </Tab>
     </TabbedShowLayout>
   </Show>

@@ -11,7 +11,7 @@ import {
 const urlSlugValidator = [
   regex(
     /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-    "URL slug должен содержать только строчные латинские буквы, цифры и дефисы",
+    "URL slug must contain only lowercase Latin letters, numbers, and hyphens",
   ),
 ];
 
@@ -19,7 +19,7 @@ const longitudeValidator = [
   required(),
   (value) => {
     if (value && (value < -180 || value > 180)) {
-      return "Долгота должна быть в диапазоне от -180 до 180 градусов";
+      return "Longitude must be between -180 and 180 degrees";
     }
     return undefined;
   },
@@ -29,7 +29,7 @@ const latitudeValidator = [
   required(),
   (value) => {
     if (value && (value < -90 || value > 90)) {
-      return "Широта должна быть в диапазоне от -90 до 90 градусов";
+      return "Latitude must be between -90 and 90 degrees";
     }
     return undefined;
   },
@@ -38,41 +38,41 @@ const latitudeValidator = [
 export const CityEdit = () => (
   <Edit>
     <TabbedForm>
-      <FormTab label="Основные данные">
+      <FormTab label="Main Data">
         <TextInput
           source="name"
-          label="Название города"
-          placeholder="Введите название города"
+          label="City Name"
+          placeholder="Enter city name"
           validate={required()}
         />
         <TextInput
           source="url"
           label="URL Slug"
           validate={urlSlugValidator}
-          helperText="Часть URL для страниц, связанных с городом"
-          placeholder="naranjo"
+          helperText="Part of the URL for pages related to the city"
+          placeholder="abangares"
         />
         <TextInput
           source="province"
-          label="Провинция"
-          placeholder="Например: Alajuela"
+          label="Province"
+          placeholder="e.g. Guanacaste"
           validate={required()}
         />
       </FormTab>
-      <FormTab label="Гео">
+      <FormTab label="Geo">
         <NumberInput
-          source="location.coordinates[0]"
-          label="Долгота"
+          source="location.longitude"
+          label="Longitude"
           validate={longitudeValidator}
-          helperText="Значение от -180 до 180"
-          placeholder="-84.3845"
+          helperText="Value from -180 to 180"
+          placeholder="-85.067"
         />
         <NumberInput
-          source="location.coordinates[1]"
-          label="Широта"
+          source="location.latitude"
+          label="Latitude"
           validate={latitudeValidator}
-          helperText="Значение от -90 до 90"
-          placeholder="10.0973"
+          helperText="Value from -90 to 90"
+          placeholder="10.26"
         />
       </FormTab>
     </TabbedForm>

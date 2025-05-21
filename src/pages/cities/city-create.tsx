@@ -71,13 +71,13 @@ export const CityCreate = () => {
         </FormTab>
         <FormTab label="Geo">
           <NumberInput
-            source="location.coordinates[0]"
+            source="location.longitude"
             label="Longitude"
             validate={longitudeValidator}
             helperText="Value from -180 to 180"
           />
           <NumberInput
-            source="location.coordinates[1]"
+            source="location.latitude"
             label="Latitude"
             validate={latitudeValidator}
             helperText="Value from -90 to 90"
