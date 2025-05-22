@@ -24,6 +24,7 @@ import { CityEdit } from "./pages/cities/city-edit";
 import { CityShow } from "./pages/cities/city-show";
 // Импорт компонентов для тегов
 import { TagList } from "./pages/tags/tag-list";
+import { TagShow } from "./pages/tags/tag-show.tsx";
 
 export const App = () => (
   <Admin
@@ -65,6 +66,7 @@ export const App = () => (
       icon={LocalOfferIcon}
       name="tags"
       list={TagList}
+      show={TagShow}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
