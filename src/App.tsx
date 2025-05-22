@@ -7,6 +7,7 @@ import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
 import PublicIcon from "@mui/icons-material/Public"; // Иконка для провинций
 import LocationCityIcon from "@mui/icons-material/LocationCity"; // Иконка для городов
+import LocalOfferIcon from "@mui/icons-material/LocalOffer"; // Иконка для тегов
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
 import { UserShow } from "./pages/users/user-show";
@@ -21,6 +22,8 @@ import { CityList } from "./pages/cities/city-list";
 import { CityCreate } from "./pages/cities/city-create";
 import { CityEdit } from "./pages/cities/city-edit";
 import { CityShow } from "./pages/cities/city-show";
+// Импорт компонентов для тегов
+import { TagList } from "./pages/tags/tag-list";
 
 export const App = () => (
   <Admin
@@ -56,6 +59,12 @@ export const App = () => (
       edit={CityEdit}
       show={CityShow}
       create={CityCreate}
+      options={{ mutationMode: "pessimistic" }}
+    />
+    <Resource
+      icon={LocalOfferIcon}
+      name="tags"
+      list={TagList}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
