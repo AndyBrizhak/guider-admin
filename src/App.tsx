@@ -25,6 +25,7 @@ import { CityShow } from "./pages/cities/city-show";
 // Импорт компонентов для тегов
 import { TagList } from "./pages/tags/tag-list";
 import { TagShow } from "./pages/tags/tag-show.tsx";
+import { TagCreate } from "./pages/tags/tag-create.tsx";
 
 export const App = () => (
   <Admin
@@ -67,6 +68,7 @@ export const App = () => (
       name="tags"
       list={TagList}
       show={TagShow}
+      create={TagCreate}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
