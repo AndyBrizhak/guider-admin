@@ -26,6 +26,7 @@ import { CityShow } from "./pages/cities/city-show";
 import { TagList } from "./pages/tags/tag-list";
 import { TagShow } from "./pages/tags/tag-show.tsx";
 import { TagCreate } from "./pages/tags/tag-create.tsx";
+import { TagEdit } from "./pages/tags/tag-edit.tsx";
 
 export const App = () => (
   <Admin
@@ -69,6 +70,7 @@ export const App = () => (
       list={TagList}
       show={TagShow}
       create={TagCreate}
+      edit={TagEdit}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
