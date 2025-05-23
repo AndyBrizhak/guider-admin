@@ -3,7 +3,7 @@
 
 import { DataProvider, fetchUtils } from "react-admin";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7078";
+const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7001";
 
 // Кастомный httpClient для добавления токена авторизации и обработки ошибок
 const httpClient = async (url: string, options: fetchUtils.Options = {}) => {

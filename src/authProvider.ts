@@ -6,7 +6,7 @@ import { AuthProvider } from "react-admin";
 export const authProvider: AuthProvider = {
   // Called when the user attempts to log in
   async login({ username, password }) {
-    const request = new Request("https://localhost:7078/login", {
+    const request = new Request("https://localhost:7001/login", {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: new Headers({ "Content-Type": "application/json" }),
