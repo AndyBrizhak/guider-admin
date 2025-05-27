@@ -1,17 +1,29 @@
-import { List, Datagrid, TextField, DateField, NumberField } from "react-admin";
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-key */
+
+import {
+  List,
+  Datagrid,
+  TextField,
+  DateField,
+  NumberField,
+  TextInput,
+} from "react-admin";
+
+const imageFilters = [
+  <TextInput label="Province" source="Province" alwaysOn />,
+  <TextInput label="City" source="City" />,
+  <TextInput label="Place" source="Place" />,
+  <TextInput label="Image Name" source="ImageName" />,
+];
 
 export const ImagesList = () => (
-  <List>
+  <List filters={imageFilters}>
     <Datagrid rowClick="show">
-      <TextField source="Province" label="Province" />
-      <TextField source="City" label="City" />
-      <TextField source="Place" label="Place" />
       <TextField source="ImageName" label="Image Name" />
-      <TextField source="FilePath" label="File Path" />
-      <NumberField source="FileSize" label="File Size" />
-      <TextField source="ContentType" label="Content Type" />
-      <TextField source="Extension" label="Extension" />
-      <DateField source="UploadDate.$date" label="Upload Date" showTime />
+      <TextField source="Place" label="Place" />
+      <TextField source="City" label="City" />
+      <TextField source="Province" label="Province" />
     </Datagrid>
   </List>
 );
