@@ -19,7 +19,7 @@ export const UserList = () => (
   <List filters={userFilters}>
     <Datagrid>
       <TextField source="username" label="User" />
-      <EmailField source="email" label="Email" />
+      {/* <EmailField source="email" label="Email" /> */}
       <TextField source="role" label="Role" />
       <EditButton label="Edit" />
     </Datagrid>
