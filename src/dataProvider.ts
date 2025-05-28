@@ -96,6 +96,28 @@ export const dataProvider: DataProvider = {
   },
   create: async (resource, params) => {
     const url = `${API_URL}/${resource}`;
+
+    // Проверяем, что создается изображение и есть файл
+    if (resource === "images" && params.data.file instanceof File) {
+      const formData = new FormData();
+      // Добавляем все поля кроме file
+      Object.entries(params.data).forEach(([key, value]) => {
+        if (key !== "file") {
+          formData.append(key, value);
+        }
+      });
+      // Добавляем сам файл
+      formData.append("file", params.data.file);
+
+      const response = await httpClient(url, {
+        method: "POST",
+        body: formData,
+        // fetchUtils сам выставит нужные заголовки для FormData
+      });
+      return { data: response.json };
+    }
+
+    // Обычный JSON-запрос для других ресурсов
     const response = await httpClient(url, {
       method: "POST",
       body: JSON.stringify(params.data),
