@@ -1,6 +1,7 @@
 import {
   Show,
-  SimpleShowLayout,
+  TabbedShowLayout,
+  Tab,
   TextField,
   NumberField,
   DateField,
@@ -8,18 +9,22 @@ import {
 
 export const ImagesShow = () => (
   <Show>
-    <SimpleShowLayout>
-      <TextField source="ImageName" label="Image Name" />
-      <TextField source="OriginalFileName" label="Original File Name" />
-      <TextField source="FilePath" label="File Path" />
-      <NumberField source="FileSize" label="File Size (bytes)" />
-      <TextField source="ContentType" label="Content Type" />
-      <TextField source="Extension" label="Extension" />
-      <TextField source="Place" label="Place" />
-      <TextField source="City" label="City" />
-      <TextField source="Province" label="Province" />
-      <DateField source="UploadDate.$date" label="Upload Date" showTime />
-    </SimpleShowLayout>
+    <TabbedShowLayout>
+      <Tab label="General">
+        <TextField source="ImageName" label="Image Name" />
+        <TextField source="Place" label="Place" />
+        <TextField source="City" label="City" />
+        <TextField source="Province" label="Province" />
+        <TextField source="FilePath" label="File Path" />
+      </Tab>
+      <Tab label="Details">
+        <TextField source="OriginalFileName" label="Original File Name" />
+        <NumberField source="FileSize" label="File Size (bytes)" />
+        <TextField source="ContentType" label="Content Type" />
+        <TextField source="Extension" label="Extension" />
+        <DateField source="UploadDate.$date" label="Upload Date" showTime />
+      </Tab>
+    </TabbedShowLayout>
   </Show>
 );
 
