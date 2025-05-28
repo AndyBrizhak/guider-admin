@@ -3,10 +3,12 @@
 
 import { AuthProvider } from "react-admin";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const authProvider: AuthProvider = {
   // Called when the user attempts to log in
   async login({ username, password }) {
-    const request = new Request("https://localhost:7001/login", {
+    const request = new Request(`${API_URL}/login`, {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: new Headers({ "Content-Type": "application/json" }),
