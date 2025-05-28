@@ -29,6 +29,7 @@ import { TagCreate } from "./pages/tags/tag-create.tsx";
 import { TagEdit } from "./pages/tags/tag-edit.tsx";
 // Импорт компонента для изображений
 import { ImagesList } from "./pages/images/images-list";
+import { ImagesShow } from "./pages/images/images-show"; // добавьте импорт
 
 export const App = () => (
   <Admin
@@ -78,6 +79,7 @@ export const App = () => (
     <Resource
       name="images"
       list={ImagesList}
+      show={ImagesShow}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
