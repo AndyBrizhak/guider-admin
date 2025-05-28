@@ -95,52 +95,81 @@ export const dataProvider: DataProvider = {
     return { data: responses.map((response) => response.json.id) };
   },
   create: async (resource, params) => {
-    const url = `${API_URL}/${resource}`;
-
     // Проверяем, что создается изображение и есть файл
-    if (resource === "images" && params.data.file instanceof File) {
+    if (resource === "images" && params.data.file) {
+      console.log("Creating image with params:", params.data);
+
       const formData = new FormData();
 
-      // Добавляем файл с правильным именем поля (ImageFile вместо file)
-      formData.append("ImageFile", params.data.file);
+      // Получаем файл из объекта rawFile (React Admin оборачивает файлы)
+      const file = params.data.file.rawFile || params.data.file;
+
+      if (!(file instanceof File)) {
+        throw new Error("Invalid file object");
+      }
+
+      // Добавляем файл с правильным именем поля
+      formData.append("ImageFile", file);
 
       // Добавляем остальные поля с правильными именами
-      if (params.data.ImageName)
+      if (params.data.ImageName) {
         formData.append("ImageName", params.data.ImageName);
-      if (params.data.Place) formData.append("Place", params.data.Place);
-      if (params.data.City) formData.append("City", params.data.City);
-      if (params.data.Province)
+      }
+      if (params.data.Place) {
+        formData.append("Place", params.data.Place);
+      }
+      if (params.data.City) {
+        formData.append("City", params.data.City);
+      }
+      if (params.data.Province) {
         formData.append("Province", params.data.Province);
+      }
 
-      // Создаем кастомный httpClient для файлов, который не добавляет Content-Type
-      const fileHttpClient = async (
-        url: string,
-        options: fetchUtils.Options = {},
-      ) => {
-        if (!options.headers) {
-          options.headers = new Headers();
-        }
+      // Логируем содержимое FormData
+      console.log("FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      // Создаем кастомный httpClient для файлов
+      const fileHttpClient = async (url: string, formData: FormData) => {
+        const headers = new Headers();
 
         // НЕ устанавливаем Content-Type для multipart/form-data - браузер сделает это автоматически
         const auth = localStorage.getItem("auth");
         if (auth) {
           const { token } = JSON.parse(auth);
-          options.headers.set("Authorization", `Bearer ${token}`);
+          headers.set("Authorization", `Bearer ${token}`);
         }
+
+        console.log("Sending request to:", url);
+        console.log("Request headers:", Object.fromEntries(headers.entries()));
 
         try {
           // Используем обычный fetch вместо fetchUtils.fetchJson для файлов
           const response = await fetch(url, {
-            method: options.method || "POST",
-            headers: options.headers,
-            body: options.body,
+            method: "POST",
+            headers: headers,
+            body: formData,
           });
 
+          console.log("Response status:", response.status);
+          console.log(
+            "Response headers:",
+            Object.fromEntries(response.headers.entries()),
+          );
+
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.error("Server error response:", errorText);
+            throw new Error(
+              `HTTP error! status: ${response.status}, body: ${errorText}`,
+            );
           }
 
           const json = await response.json();
+          console.log("Response JSON:", json);
+
           return {
             status: response.status,
             headers: response.headers,
@@ -148,25 +177,19 @@ export const dataProvider: DataProvider = {
             json: json,
           };
         } catch (error: any) {
-          window.location.hash = "#/";
-          return {
-            status: error.status || 500,
-            headers: new Headers(),
-            body: error.body || error.message || "Server error",
-            json: {},
-          };
+          console.error("Request failed:", error);
+          throw error;
         }
       };
 
-      const response = await fileHttpClient(url, {
-        method: "POST",
-        body: formData,
-      });
+      const url = `${API_URL}/images`;
+      const response = await fileHttpClient(url, formData);
 
       return { data: response.json };
     }
 
     // Обычный JSON-запрос для других ресурсов
+    const url = `${API_URL}/${resource}`;
     const response = await httpClient(url, {
       method: "POST",
       body: JSON.stringify(params.data),

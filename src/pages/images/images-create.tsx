@@ -13,9 +13,10 @@ export const ImagesCreate = () => (
       <FileInput
         source="file"
         label="Image File"
-        accept=".jpg,.jpeg,.png,.gif,.bmp,.webp"
+        accept="image/*"
         validate={required()}
         maxSize={10000000} // 10MB максимум
+        multiple={false}
       >
         <FileField source="src" title="title" />
       </FileInput>
