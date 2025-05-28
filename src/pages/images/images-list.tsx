@@ -8,6 +8,8 @@ import {
   DateField,
   NumberField,
   TextInput,
+  UrlField,
+  FunctionField,
 } from "react-admin";
 
 const imageFilters = [
@@ -17,6 +19,8 @@ const imageFilters = [
   <TextInput label="Image Name" source="ImageName" />,
 ];
 
+const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7001";
+
 export const ImagesList = () => (
   <List filters={imageFilters}>
     <Datagrid rowClick="show">
@@ -24,6 +28,31 @@ export const ImagesList = () => (
       <TextField source="Place" label="Place" />
       <TextField source="City" label="City" />
       <TextField source="Province" label="Province" />
+      <FunctionField
+        label="Image URL"
+        render={(record: any) => {
+          // Удаляем ведущий слэш, если он есть, чтобы не было двойных слэшей
+          const cleanPath = record.FilePath
+            ? record.FilePath.replace(/^\/+/, "")
+            : "";
+          const imageUrl = cleanPath
+            ? `${API_URL}/images/${cleanPath}`
+            : "";
+          return imageUrl ? (
+            <div>
+              <a href={imageUrl} target="_blank" rel="noopener noreferrer">
+                {imageUrl}
+              </a>
+              <br />
+              <small style={{ color: "#666" }}>
+                FilePath: {record.FilePath}
+              </small>
+            </div>
+          ) : (
+            "No image"
+          );
+        }}
+      />
     </Datagrid>
   </List>
 );
