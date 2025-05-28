@@ -100,20 +100,69 @@ export const dataProvider: DataProvider = {
     // Проверяем, что создается изображение и есть файл
     if (resource === "images" && params.data.file instanceof File) {
       const formData = new FormData();
-      // Добавляем все поля кроме file
-      Object.entries(params.data).forEach(([key, value]) => {
-        if (key !== "file") {
-          formData.append(key, value);
-        }
-      });
-      // Добавляем сам файл
-      formData.append("file", params.data.file);
 
-      const response = await httpClient(url, {
+      // Добавляем файл с правильным именем поля (ImageFile вместо file)
+      formData.append("ImageFile", params.data.file);
+
+      // Добавляем остальные поля с правильными именами
+      if (params.data.ImageName)
+        formData.append("ImageName", params.data.ImageName);
+      if (params.data.Place) formData.append("Place", params.data.Place);
+      if (params.data.City) formData.append("City", params.data.City);
+      if (params.data.Province)
+        formData.append("Province", params.data.Province);
+
+      // Создаем кастомный httpClient для файлов, который не добавляет Content-Type
+      const fileHttpClient = async (
+        url: string,
+        options: fetchUtils.Options = {},
+      ) => {
+        if (!options.headers) {
+          options.headers = new Headers();
+        }
+
+        // НЕ устанавливаем Content-Type для multipart/form-data - браузер сделает это автоматически
+        const auth = localStorage.getItem("auth");
+        if (auth) {
+          const { token } = JSON.parse(auth);
+          options.headers.set("Authorization", `Bearer ${token}`);
+        }
+
+        try {
+          // Используем обычный fetch вместо fetchUtils.fetchJson для файлов
+          const response = await fetch(url, {
+            method: options.method || "POST",
+            headers: options.headers,
+            body: options.body,
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const json = await response.json();
+          return {
+            status: response.status,
+            headers: response.headers,
+            body: json,
+            json: json,
+          };
+        } catch (error: any) {
+          window.location.hash = "#/";
+          return {
+            status: error.status || 500,
+            headers: new Headers(),
+            body: error.body || error.message || "Server error",
+            json: {},
+          };
+        }
+      };
+
+      const response = await fileHttpClient(url, {
         method: "POST",
         body: formData,
-        // fetchUtils сам выставит нужные заголовки для FormData
       });
+
       return { data: response.json };
     }
 
