@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-key */
+
 import {
   Create,
   SimpleForm,
@@ -11,15 +14,33 @@ import {
 
 export const ImagesCreate = () => {
   // Получаем список провинций
-  const { data: provinces = [], isLoading } = useGetList("provinces", {
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-  });
+  const { data: provinces = [], isLoading: isProvincesLoading } = useGetList(
+    "provinces",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+    },
+  );
 
   // Формируем список для SelectInput: label — name, value — url
   const provinceChoices = provinces.map((province: any) => ({
     id: province.url,
     name: province.name,
+  }));
+
+  // Получаем все города без фильтрации по провинции
+  const { data: cities = [], isLoading: isCitiesLoading } = useGetList(
+    "cities",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+    },
+  );
+
+  // Формируем список для SelectInput: label — name, value — url
+  const cityChoices = cities.map((city: any) => ({
+    id: city.url,
+    name: city.name,
   }));
 
   return (
@@ -41,13 +62,17 @@ export const ImagesCreate = () => {
           choices={provinceChoices}
           optionText="name"
           optionValue="id"
-          disabled={isLoading}
+          disabled={isProvincesLoading}
           helperText="Выберите провинцию"
         />
-        <TextInput
+        <SelectInput
           source="City"
           label="City"
-          helperText="Город (необязательно)"
+          choices={cityChoices}
+          optionText="name"
+          optionValue="id"
+          disabled={isCitiesLoading}
+          helperText="Выберите город"
         />
         <TextInput source="Place" label="Place" helperText="Название места" />
         <TextInput
