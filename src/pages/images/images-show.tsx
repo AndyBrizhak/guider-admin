@@ -53,49 +53,69 @@ export const ImagesShow = () => (
               flex: 1,
               display: "flex",
               flexDirection: "column",
-              gap: 16,
+              gap: 12,
             }}
           >
-            <TextField source="ImageName" label="Image Name" />
-            <FunctionField
-              label="Place"
-              render={(record: any) => (record.Place ? record.Place : "")}
-            />
-            <FunctionField
-              label="City"
-              render={(record: any) => (record.City ? record.City : "")}
-            />
-            <FunctionField
-              label="Province"
-              render={(record: any) => (record.Province ? record.Province : "")}
-            />
-            <FunctionField
-              label="Image URL"
-              render={(record: any) => {
-                const cleanPath = record.FilePath
-                  ? record.FilePath.replace(/^\/+/, "")
-                  : "";
-                const imageUrl = cleanPath
-                  ? `${API_URL}/images/${cleanPath}`
-                  : "";
-                return imageUrl ? (
-                  <a
-                    href={imageUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: "#1976d2",
-                      textDecoration: "underline",
-                      wordBreak: "break-all",
-                    }}
-                  >
-                    {imageUrl}
-                  </a>
-                ) : (
-                  "No image available"
-                );
-              }}
-            />
+            {/* General fields with labels on the left and values on the right */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 120, fontWeight: 500 }}>
+                Image Name:
+              </span>
+              <TextField source="ImageName" label={false} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 120, fontWeight: 500 }}>Place:</span>
+              <FunctionField
+                label={false}
+                render={(record: any) => (record.Place ? record.Place : "")}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 120, fontWeight: 500 }}>City:</span>
+              <FunctionField
+                label={false}
+                render={(record: any) => (record.City ? record.City : "")}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 120, fontWeight: 500 }}>Province:</span>
+              <FunctionField
+                label={false}
+                render={(record: any) =>
+                  record.Province ? record.Province : ""
+                }
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 120, fontWeight: 500 }}>Image URL:</span>
+              <FunctionField
+                label={false}
+                render={(record: any) => {
+                  const cleanPath = record.FilePath
+                    ? record.FilePath.replace(/^\/+/, "")
+                    : "";
+                  const imageUrl = cleanPath
+                    ? `${API_URL}/images/${cleanPath}`
+                    : "";
+                  return imageUrl ? (
+                    <a
+                      href={imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "#1976d2",
+                        textDecoration: "underline",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {imageUrl}
+                    </a>
+                  ) : (
+                    "No image available"
+                  );
+                }}
+              />
+            </div>
           </div>
           <div style={{ minWidth: 320, textAlign: "center" }}>
             <FunctionField
@@ -112,14 +132,37 @@ export const ImagesShow = () => (
               flex: 1,
               display: "flex",
               flexDirection: "column",
-              gap: 16,
+              gap: 12,
             }}
           >
-            <TextField source="OriginalFileName" label="Original File Name" />
-            <NumberField source="FileSize" label="File Size (bytes)" />
-            <TextField source="ContentType" label="Content Type" />
-            <TextField source="Extension" label="Extension" />
-            <DateField source="UploadDate.$date" label="Upload Date" showTime />
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 140, fontWeight: 500 }}>
+                Original File Name:
+              </span>
+              <TextField source="OriginalFileName" label={false} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 140, fontWeight: 500 }}>
+                File Size (bytes):
+              </span>
+              <NumberField source="FileSize" label={false} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 140, fontWeight: 500 }}>
+                Content Type:
+              </span>
+              <TextField source="ContentType" label={false} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 140, fontWeight: 500 }}>Extension:</span>
+              <TextField source="Extension" label={false} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ minWidth: 140, fontWeight: 500 }}>
+                Upload Date:
+              </span>
+              <DateField source="UploadDate.$date" label={false} showTime />
+            </div>
           </div>
           <div style={{ minWidth: 320, textAlign: "center" }}>
             <FunctionField
