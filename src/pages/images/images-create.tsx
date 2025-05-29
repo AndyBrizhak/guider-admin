@@ -5,42 +5,58 @@ import {
   required,
   FileInput,
   FileField,
+  SelectInput,
+  useGetList,
 } from "react-admin";
 
-export const ImagesCreate = () => (
-  <Create title="Create Image">
-    <SimpleForm>
-      <FileInput
-        source="file"
-        label="Image File"
-        accept="image/*"
-        validate={required()}
-        maxSize={10000000} // 10MB максимум
-        multiple={false}
-      >
-        <FileField source="src" title="title" />
-      </FileInput>
-      <TextInput
-        source="ImageName"
-        label="Image Name"
-        validate={required()}
-        helperText="Имя файла (можно без расширения)"
-      />
-      <TextInput
-        source="Place"
-        label="Place"
-        helperText="Название места"
-      />
-      <TextInput
-        source="City"
-        label="City"
-        helperText="Город (необязательно)"
-      />
-      <TextInput
-        source="Province"
-        label="Province"
-        helperText="Область/провинция"
-      />
-    </SimpleForm>
-  </Create>
-);
+export const ImagesCreate = () => {
+  // Получаем список провинций
+  const { data: provinces = [], isLoading } = useGetList("provinces", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
+
+  // Формируем список для SelectInput: label — name, value — url
+  const provinceChoices = provinces.map((province: any) => ({
+    id: province.url,
+    name: province.name,
+  }));
+
+  return (
+    <Create title="Create Image">
+      <SimpleForm>
+        <FileInput
+          source="file"
+          label="Image File"
+          accept="image/*"
+          validate={required()}
+          maxSize={10000000} // 10MB максимум
+          multiple={false}
+        >
+          <FileField source="src" title="title" />
+        </FileInput>
+        <SelectInput
+          source="Province"
+          label="Province"
+          choices={provinceChoices}
+          optionText="name"
+          optionValue="id"
+          disabled={isLoading}
+          helperText="Выберите провинцию"
+        />
+        <TextInput
+          source="City"
+          label="City"
+          helperText="Город (необязательно)"
+        />
+        <TextInput source="Place" label="Place" helperText="Название места" />
+        <TextInput
+          source="ImageName"
+          label="Image Name"
+          validate={required()}
+          helperText="Имя файла (можно без расширения)"
+        />
+      </SimpleForm>
+    </Create>
+  );
+};
