@@ -5,10 +5,7 @@ import {
   List,
   Datagrid,
   TextField,
-  DateField,
-  NumberField,
   TextInput,
-  UrlField,
   FunctionField,
 } from "react-admin";
 
@@ -25,31 +22,40 @@ export const ImagesList = () => (
   <List filters={imageFilters}>
     <Datagrid rowClick="show">
       <TextField source="ImageName" label="Image Name" />
+      <FunctionField
+        label="Preview"
+        render={(record: any) => {
+          const cleanPath = record.FilePath
+            ? record.FilePath.replace(/^\/+/, "")
+            : "";
+          const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
+          return imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={record.ImageName || "preview"}
+              style={{ maxWidth: 80, maxHeight: 60, objectFit: "contain" }}
+            />
+          ) : (
+            ""
+          );
+        }}
+      />
       <TextField source="Place" label="Place" />
       <TextField source="City" label="City" />
       <TextField source="Province" label="Province" />
       <FunctionField
         label="Image URL"
         render={(record: any) => {
-          // Удаляем ведущий слэш, если он есть, чтобы не было двойных слэшей
           const cleanPath = record.FilePath
             ? record.FilePath.replace(/^\/+/, "")
             : "";
-          const imageUrl = cleanPath
-            ? `${API_URL}/images/${cleanPath}`
-            : "";
+          const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
           return imageUrl ? (
-            <div>
-              <a href={imageUrl} target="_blank" rel="noopener noreferrer">
-                {imageUrl}
-              </a>
-              <br />
-              <small style={{ color: "#666" }}>
-                FilePath: {record.FilePath}
-              </small>
-            </div>
+            <a href={imageUrl} target="_blank" rel="noopener noreferrer">
+              {imageUrl}
+            </a>
           ) : (
-            "No image"
+            ""
           );
         }}
       />

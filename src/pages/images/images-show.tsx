@@ -10,28 +10,75 @@ import {
 
 const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7001";
 
+const ImagePreview = ({ record }: { record: any }) => {
+  const cleanPath = record?.FilePath ? record.FilePath.replace(/^\/+/, "") : "";
+  const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
+  return imageUrl ? (
+    <img
+      src={imageUrl}
+      alt={record.ImageName || "Image"}
+      style={{
+        maxWidth: "300px",
+        maxHeight: "200px",
+        border: "1px solid #ddd",
+        borderRadius: "4px",
+      }}
+    />
+  ) : (
+    <div
+      style={{
+        width: "300px",
+        height: "200px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#f5f5f5",
+        color: "#aaa",
+        border: "1px solid #ddd",
+        borderRadius: "4px",
+      }}
+    >
+      No preview
+    </div>
+  );
+};
+
 export const ImagesShow = () => (
   <Show>
     <TabbedShowLayout>
       <Tab label="General">
-        <TextField source="ImageName" label="Image Name" />
-        <TextField source="Place" label="Place" />
-        <TextField source="City" label="City" />
-        <TextField source="Province" label="Province" />
-        {/* <TextField source="FilePath" label="File Path" /> */}
-        <FunctionField
-          label="Image URL"
-          render={(record: any) => {
-            // Удаляем ведущий слэш, если он есть, чтобы не было двойных слэшей
-            const cleanPath = record.FilePath
-              ? record.FilePath.replace(/^\/+/, "")
-              : "";
-            const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
-
-            return imageUrl ? (
-              <div>
-                <div style={{ marginBottom: "10px" }}>
-                  {/* <strong>Full URL:</strong>{" "} */}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 32 }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <TextField source="ImageName" label="Image Name" />
+            <FunctionField
+              label="Place"
+              render={(record: any) => (record.Place ? record.Place : "")}
+            />
+            <FunctionField
+              label="City"
+              render={(record: any) => (record.City ? record.City : "")}
+            />
+            <FunctionField
+              label="Province"
+              render={(record: any) => (record.Province ? record.Province : "")}
+            />
+            <FunctionField
+              label="Image URL"
+              render={(record: any) => {
+                const cleanPath = record.FilePath
+                  ? record.FilePath.replace(/^\/+/, "")
+                  : "";
+                const imageUrl = cleanPath
+                  ? `${API_URL}/images/${cleanPath}`
+                  : "";
+                return imageUrl ? (
                   <a
                     href={imageUrl}
                     target="_blank"
@@ -44,49 +91,43 @@ export const ImagesShow = () => (
                   >
                     {imageUrl}
                   </a>
-                </div>
-                {/* <div style={{ marginBottom: "10px" }}>
-                  <strong>File Path:</strong> {record.FilePath}
-                </div> */}
-                {/* <div style={{ marginBottom: "10px" }}>
-                  <strong>API URL:</strong> {API_URL}
-                </div> */}
-                <div>
-                  <strong>Preview:</strong>
-                  <br />
-                  <img
-                    src={imageUrl}
-                    alt={record.ImageName || "Image"}
-                    style={{
-                      maxWidth: "300px",
-                      maxHeight: "200px",
-                      marginTop: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "4px",
-                    }}
-                    onLoad={() =>
-                      console.log("Image loaded successfully:", imageUrl)
-                    }
-                    onError={(e) => {
-                      console.error("Image failed to load:", imageUrl);
-                      console.error("Error event:", e);
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              "No image available"
-            );
-          }}
-        />
+                ) : (
+                  "No image available"
+                );
+              }}
+            />
+          </div>
+          <div style={{ minWidth: 320, textAlign: "center" }}>
+            <FunctionField
+              label=""
+              render={(record: any) => <ImagePreview record={record} />}
+            />
+          </div>
+        </div>
       </Tab>
       <Tab label="Details">
-        <TextField source="OriginalFileName" label="Original File Name" />
-        <NumberField source="FileSize" label="File Size (bytes)" />
-        <TextField source="ContentType" label="Content Type" />
-        <TextField source="Extension" label="Extension" />
-        <DateField source="UploadDate.$date" label="Upload Date" showTime />
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 32 }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <TextField source="OriginalFileName" label="Original File Name" />
+            <NumberField source="FileSize" label="File Size (bytes)" />
+            <TextField source="ContentType" label="Content Type" />
+            <TextField source="Extension" label="Extension" />
+            <DateField source="UploadDate.$date" label="Upload Date" showTime />
+          </div>
+          <div style={{ minWidth: 320, textAlign: "center" }}>
+            <FunctionField
+              label=""
+              render={(record: any) => <ImagePreview record={record} />}
+            />
+          </div>
+        </div>
       </Tab>
     </TabbedShowLayout>
   </Show>

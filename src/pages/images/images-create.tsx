@@ -29,7 +29,6 @@ export const ImagesCreate = () => (
       <TextInput
         source="Place"
         label="Place"
-        validate={required()}
         helperText="Название места"
       />
       <TextInput
@@ -40,7 +39,6 @@ export const ImagesCreate = () => (
       <TextInput
         source="Province"
         label="Province"
-        validate={required()}
         helperText="Область/провинция"
       />
     </SimpleForm>
