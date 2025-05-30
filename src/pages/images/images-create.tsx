@@ -11,6 +11,7 @@ import {
   SelectInput,
   useGetList,
   regex,
+  FormDataConsumer,
 } from "react-admin";
 
 const urlSlugValidator = regex(
@@ -24,7 +25,6 @@ const placeSlugValidator = regex(
 );
 
 export const ImagesCreate = () => {
-  // Получаем список провинций
   const { data: provinces = [], isLoading: isProvincesLoading } = useGetList(
     "provinces",
     {
@@ -36,20 +36,6 @@ export const ImagesCreate = () => {
   const provinceChoices = provinces.map((province: any) => ({
     id: province.url,
     name: province.name,
-  }));
-
-  // Получаем все города без фильтрации по провинции
-  const { data: cities = [], isLoading: isCitiesLoading } = useGetList(
-    "cities",
-    {
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: "name", order: "ASC" },
-    },
-  );
-
-  const cityChoices = cities.map((city: any) => ({
-    id: city.url,
-    name: city.name,
   }));
 
   return (
@@ -74,15 +60,34 @@ export const ImagesCreate = () => {
           disabled={isProvincesLoading}
           helperText="Выберите провинцию"
         />
-        <SelectInput
-          source="City"
-          // label="City"
-          choices={cityChoices}
-          optionText="name"
-          optionValue="id"
-          disabled={isCitiesLoading}
-          helperText="Выберите город"
-        />
+        <FormDataConsumer>
+          {({ formData }) => {
+            // Получаем города с фильтрацией по выбранной провинции
+            const { data: cities = [], isLoading: isCitiesLoading } = useGetList(
+              "cities",
+              {
+                pagination: { page: 1, perPage: 100 },
+                sort: { field: "name", order: "ASC" },
+                filter: formData.Province ? { province: formData.Province } : {},
+              },
+            );
+            const cityChoices = cities.map((city: any) => ({
+              id: city.url,
+              name: city.name,
+            }));
+            return (
+              <SelectInput
+                source="City"
+                // label="City"
+                choices={cityChoices}
+                optionText="name"
+                optionValue="id"
+                disabled={isCitiesLoading}
+                helperText="Выберите город"
+              />
+            );
+          }}
+        </FormDataConsumer>
         <TextInput
           source="Place"
           // label="Place"
