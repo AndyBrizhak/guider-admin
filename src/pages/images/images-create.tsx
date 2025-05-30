@@ -15,12 +15,12 @@ import {
 
 const urlSlugValidator = regex(
   /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-  "Image Name must contain only lowercase letters, numbers, and hyphens"
+  "Image Name must contain only lowercase letters, numbers, and hyphens",
 );
 
 const placeSlugValidator = regex(
   /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-  "Place must contain only lowercase letters, numbers, and hyphens"
+  "Place must contain only lowercase letters, numbers, and hyphens",
 );
 
 export const ImagesCreate = () => {
@@ -67,7 +67,7 @@ export const ImagesCreate = () => {
         </FileInput>
         <SelectInput
           source="Province"
-          label="Province"
+          // label="Province"
           choices={provinceChoices}
           optionText="name"
           optionValue="id"
@@ -76,7 +76,7 @@ export const ImagesCreate = () => {
         />
         <SelectInput
           source="City"
-          label="City"
+          // label="City"
           choices={cityChoices}
           optionText="name"
           optionValue="id"
@@ -85,13 +85,13 @@ export const ImagesCreate = () => {
         />
         <TextInput
           source="Place"
-          label="Place"
+          // label="Place"
           helperText="Название места (только строчные буквы, цифры и дефисы)"
           validate={placeSlugValidator}
         />
         <TextInput
           source="ImageName"
-          label="Image Name (URL part)"
+          // label="Image Name (URL part)"
           validate={[required(), urlSlugValidator]}
           helperText="Только строчные буквы, цифры и дефисы"
         />
