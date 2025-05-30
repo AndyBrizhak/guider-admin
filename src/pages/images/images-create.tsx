@@ -10,7 +10,18 @@ import {
   FileField,
   SelectInput,
   useGetList,
+  regex,
 } from "react-admin";
+
+const urlSlugValidator = regex(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  "Image Name must contain only lowercase letters, numbers, and hyphens"
+);
+
+const placeSlugValidator = regex(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  "Place must contain only lowercase letters, numbers, and hyphens"
+);
 
 export const ImagesCreate = () => {
   // Получаем список провинций
@@ -22,7 +33,6 @@ export const ImagesCreate = () => {
     },
   );
 
-  // Формируем список для SelectInput: label — name, value — url
   const provinceChoices = provinces.map((province: any) => ({
     id: province.url,
     name: province.name,
@@ -37,7 +47,6 @@ export const ImagesCreate = () => {
     },
   );
 
-  // Формируем список для SelectInput: label — name, value — url
   const cityChoices = cities.map((city: any) => ({
     id: city.url,
     name: city.name,
@@ -74,12 +83,17 @@ export const ImagesCreate = () => {
           disabled={isCitiesLoading}
           helperText="Выберите город"
         />
-        <TextInput source="Place" label="Place" helperText="Название места" />
+        <TextInput
+          source="Place"
+          label="Place"
+          helperText="Название места (только строчные буквы, цифры и дефисы)"
+          validate={placeSlugValidator}
+        />
         <TextInput
           source="ImageName"
-          label="Image Name"
-          validate={required()}
-          helperText="Имя файла (можно без расширения)"
+          label="Image Name (URL part)"
+          validate={[required(), urlSlugValidator]}
+          helperText="Только строчные буквы, цифры и дефисы"
         />
       </SimpleForm>
     </Create>
