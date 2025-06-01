@@ -25,10 +25,14 @@ export const PlacesList = () => (
       <FunctionField
         label="City"
         render={(record: any) => record.address?.city || ""}
+        sortBy="address.city"
+        sortable={true}
       />
       <FunctionField
         label="Province"
         render={(record: any) => record.address?.province || ""}
+        sortBy="address.province"
+        sortable={true}
       />
       <UrlField source="url" label="URL" target="_blank" />
       {/* <FunctionField
@@ -52,15 +56,15 @@ export const PlacesList = () => (
         }}
       /> */}
       <TextField source="category" label="Category" />
-      <TextField source="rating" label="Rating" />
-      <FunctionField
+      {/* <TextField source="rating" label="Rating" /> */}
+      {/* <FunctionField
         label="Created"
         render={(record: any) => {
           return record.createdAt
             ? new Date(record.createdAt).toLocaleDateString()
             : "";
         }}
-      />
+      /> */}
     </Datagrid>
   </List>
 );
