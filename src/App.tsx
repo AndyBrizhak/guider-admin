@@ -32,6 +32,8 @@ import { ImagesList } from "./pages/images/images-list";
 import { ImagesShow } from "./pages/images/images-show";
 import { ImagesCreate } from "./pages/images/images-create";
 
+import { PlacesList } from "./pages/places/places-list";
+
 export const App = () => (
   <Admin
     layout={Layout}
@@ -84,5 +86,6 @@ export const App = () => (
       create={ImagesCreate}
       options={{ mutationMode: "pessimistic" }}
     />
+    <Resource name="places" list={PlacesList} />
   </Admin>
 );
