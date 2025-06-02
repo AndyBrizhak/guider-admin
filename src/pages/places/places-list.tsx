@@ -12,8 +12,8 @@ import {
 
 const placeFilters = [
   <TextInput label="Search" source="q" alwaysOn />,
-  <TextInput label="Province" source="address.province" />,
-  <TextInput label="City" source="address.city" />,
+  <TextInput label="Province" source="province" />,
+  <TextInput label="City" source="city" />,
   <TextInput label="Name" source="name" />,
   <TextInput label="URL" source="url" />,
 ];
