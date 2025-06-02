@@ -58,16 +58,10 @@ export const PlacesCreate = () => (
           source="category"
           label="Category"
           choices={[
-            { id: "restaurant", name: "Restaurant" },
-            { id: "hotel", name: "Hotel" },
-            { id: "attraction", name: "Attraction" },
+            { id: "to-eat", name: "Places to Eat" },
+            { id: "adventures", name: "Adventures" },
+            { id: "shops", name: "Shops" },
             { id: "services", name: "Services" },
-            { id: "shop", name: "Shop" },
-            { id: "entertainment", name: "Entertainment" },
-            { id: "transport", name: "Transport" },
-            { id: "health", name: "Health" },
-            { id: "education", name: "Education" },
-            { id: "other", name: "Other" },
           ]}
           validate={validateRequired}
           fullWidth
@@ -94,7 +88,7 @@ export const PlacesCreate = () => (
         <TextInput
           source="description"
           label="Description"
-          validate={validateRequired}
+          // validate={validateRequired}
           fullWidth
           multiline
         />
@@ -104,7 +98,7 @@ export const PlacesCreate = () => (
         <TextInput
           source="address.street"
           label="Street Address"
-          validate={validateRequired}
+          // validate={validateRequired}
           fullWidth
         />
         <TextInput
@@ -122,13 +116,13 @@ export const PlacesCreate = () => (
         <TextInput
           source="address.country"
           label="Country"
-          validate={validateRequired}
+          // validate={validateRequired}
           fullWidth
         />
         <NumberInput
           source="latitude"
           label="Latitude"
-          validate={validateLatitude}
+          // validate={validateLatitude}
           step={0.0000001}
           helperText="Latitude coordinate (-90 to 90)"
           fullWidth
@@ -136,7 +130,7 @@ export const PlacesCreate = () => (
         <NumberInput
           source="longitude"
           label="Longitude"
-          validate={validateLongitude}
+          // validate={validateLongitude}
           step={0.0000001}
           helperText="Longitude coordinate (-180 to 180)"
           fullWidth
