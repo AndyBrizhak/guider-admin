@@ -10,8 +10,9 @@ import {
   required,
   email,
   minLength,
-  maxLength,
+  maxLength, // добавьте импорт
 } from "react-admin";
+import { RichTextInput } from "ra-input-rich-text";
 
 // Validation functions
 const validateRequired = required("This field is required");
@@ -85,12 +86,16 @@ export const PlacesCreate = () => (
           defaultValue="active"
           fullWidth
         />
-        <TextInput
+        <RichTextInput
           source="description"
           label="Description"
-          // validate={validateRequired}
           fullWidth
-          multiline
+          toolbar={[
+            ["bold", "italic", "underline", "link"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["blockquote", "code-block"],
+            ["clean"],
+          ]}
         />
       </FormTab>
 
