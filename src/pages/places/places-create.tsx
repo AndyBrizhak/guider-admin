@@ -61,6 +61,20 @@ export const PlacesCreate = () => {
     name: province.name,
   }));
 
+  // Получаем список городов из ресурса "cities"
+  const { data: cities = [], isLoading: isCitiesLoading } = useGetList(
+    "cities",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+    },
+  );
+
+  const cityChoices = cities.map((city: any) => ({
+    id: city.name,
+    name: city.name,
+  }));
+
   return (
     <Create>
       <TabbedForm>
@@ -124,9 +138,11 @@ export const PlacesCreate = () => {
             validate={validateRequired}
             fullWidth
           />
-          <TextInput
+          <SelectInput
             source="address.city"
             label="City"
+            choices={cityChoices}
+            disabled={isCitiesLoading}
             validate={validateRequired}
             fullWidth
           />
