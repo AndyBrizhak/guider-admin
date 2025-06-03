@@ -12,6 +12,7 @@ import {
   minLength,
   maxLength,
   useGetList,
+  FormDataConsumer,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -59,20 +60,6 @@ export const PlacesCreate = () => {
   const provinceChoices = provinces.map((province: any) => ({
     id: province.name,
     name: province.name,
-  }));
-
-  // Получаем список городов из ресурса "cities"
-  const { data: cities = [], isLoading: isCitiesLoading } = useGetList(
-    "cities",
-    {
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: "name", order: "ASC" },
-    },
-  );
-
-  const cityChoices = cities.map((city: any) => ({
-    id: city.name,
-    name: city.name,
   }));
 
   return (
@@ -138,14 +125,33 @@ export const PlacesCreate = () => {
             validate={validateRequired}
             fullWidth
           />
-          <SelectInput
-            source="address.city"
-            label="City"
-            choices={cityChoices}
-            disabled={isCitiesLoading}
-            validate={validateRequired}
-            fullWidth
-          />
+          <FormDataConsumer>
+            {({ formData }) => {
+              const province = formData.address?.province;
+              const { data: cities = [], isLoading: isCitiesLoading } =
+                useGetList("cities", {
+                  pagination: { page: 1, perPage: 100 },
+                  sort: { field: "name", order: "ASC" },
+                  filter: province ? { province } : {},
+                });
+
+              const cityChoices = cities.map((city: any) => ({
+                id: city.name,
+                name: city.name,
+              }));
+
+              return (
+                <SelectInput
+                  source="address.city"
+                  label="City"
+                  choices={cityChoices}
+                  disabled={isCitiesLoading}
+                  validate={validateRequired}
+                  fullWidth
+                />
+              );
+            }}
+          </FormDataConsumer>
           <TextInput source="address.street" label="Street Address" fullWidth />
           <NumberInput
             source="latitude"
