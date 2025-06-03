@@ -86,17 +86,7 @@ export const PlacesCreate = () => (
           defaultValue="active"
           fullWidth
         />
-        <RichTextInput
-          source="description"
-          label="Description"
-          fullWidth
-          toolbar={[
-            ["bold", "italic", "underline", "link"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["blockquote", "code-block"],
-            ["clean"],
-          ]}
-        />
+        <RichTextInput source="description" label="Description" fullWidth />
       </FormTab>
 
       <FormTab label="Address & Location">
