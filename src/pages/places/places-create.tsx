@@ -10,7 +10,7 @@ import {
   required,
   email,
   minLength,
-  maxLength, // добавьте импорт
+  maxLength,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -90,16 +90,14 @@ export const PlacesCreate = () => (
       </FormTab>
 
       <FormTab label="Address & Location">
-        <TextInput
-          source="address.street"
-          label="Street Address"
-          // validate={validateRequired}
-          fullWidth
-        />
-        <TextInput
-          source="address.city"
-          label="City"
-          validate={validateRequired}
+        <SelectInput
+          source="address.country"
+          label="Country"
+          choices={[
+            { id: "Costa Rica", name: "Costa Rica" },
+            { id: "Other", name: "Other" },
+          ]}
+          defaultValue="Costa Rica"
           fullWidth
         />
         <TextInput
@@ -109,15 +107,15 @@ export const PlacesCreate = () => (
           fullWidth
         />
         <TextInput
-          source="address.country"
-          label="Country"
-          // validate={validateRequired}
+          source="address.city"
+          label="City"
+          validate={validateRequired}
           fullWidth
         />
+        <TextInput source="address.street" label="Street Address" fullWidth />
         <NumberInput
           source="latitude"
           label="Latitude"
-          // validate={validateLatitude}
           step={0.0000001}
           helperText="Latitude coordinate (-90 to 90)"
           fullWidth
@@ -125,7 +123,6 @@ export const PlacesCreate = () => (
         <NumberInput
           source="longitude"
           label="Longitude"
-          // validate={validateLongitude}
           step={0.0000001}
           helperText="Longitude coordinate (-180 to 180)"
           fullWidth
