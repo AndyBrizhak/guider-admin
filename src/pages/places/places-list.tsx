@@ -16,6 +16,7 @@ const placeFilters = [
   <TextInput label="City" source="city" />,
   <TextInput label="Name" source="name" />,
   <TextInput label="URL" source="url" />,
+  <TextInput label="Status" source="status" />, // добавлен фильтр по статусу
 ];
 
 export const PlacesList = () => (
@@ -35,36 +36,13 @@ export const PlacesList = () => (
         sortable={true}
       />
       <UrlField source="url" label="URL" target="_blank" />
-      {/* <FunctionField
-        label="Description"
-        render={(record: any) => {
-          return record.description ? (
-            <div
-              style={{
-                maxWidth: 200,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {record.description.length > 100
-                ? `${record.description.substring(0, 100)}...`
-                : record.description}
-            </div>
-          ) : (
-            ""
-          );
-        }}
-      /> */}
       <TextField source="category" label="Category" />
-      {/* <TextField source="rating" label="Rating" /> */}
-      {/* <FunctionField
-        label="Created"
-        render={(record: any) => {
-          return record.createdAt
-            ? new Date(record.createdAt).toLocaleDateString()
-            : "";
-        }}
-      /> */}
+      <FunctionField
+        label="Status"
+        render={(record: any) => record.status ?? ""}
+        sortBy="status"
+        sortable={true}
+      />
     </Datagrid>
   </List>
 );
