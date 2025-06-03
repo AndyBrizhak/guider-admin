@@ -65,7 +65,7 @@ export const PlacesCreate = () => {
   return (
     <Create>
       <TabbedForm>
-        <FormTab label="Basic Information">
+        <FormTab label="Main">
           <TextInput
             source="name"
             label="Name"
@@ -103,6 +103,9 @@ export const PlacesCreate = () => {
             defaultValue="active"
             fullWidth
           />
+        </FormTab>
+
+        <FormTab label="Description">
           <RichTextInput source="description" label="Description" fullWidth />
         </FormTab>
 
@@ -172,7 +175,7 @@ export const PlacesCreate = () => {
           />
         </FormTab>
 
-        <FormTab label="Contact Information">
+        <FormTab label="Contacts">
           <TextInput
             source="phone.callable"
             label="Phone Number"
@@ -197,23 +200,9 @@ export const PlacesCreate = () => {
             validate={validateUrl}
             fullWidth
           />
-          <TextInput
-            source="social_network.vip"
-            label="VIP URL"
-            validate={validateUrl}
-            fullWidth
-          />
-          <TextInput source="owner.name" label="Owner Name" fullWidth />
-          <TextInput source="owner.phone" label="Owner Phone" fullWidth />
-          <TextInput
-            source="vipEmail"
-            label="VIP Email"
-            validate={validateEmail}
-            fullWidth
-          />
         </FormTab>
 
-        <FormTab label="Media & Tags">
+        <FormTab label="Media">
           <ArrayInput source="img_link" label="Images">
             <SimpleFormIterator>
               <TextInput
@@ -232,6 +221,9 @@ export const PlacesCreate = () => {
             fullWidth
             helperText="Link to preview the place"
           />
+        </FormTab>
+
+        <FormTab label="Tags">
           <ArrayInput source="tags" label="Tags">
             <SimpleFormIterator>
               <TextInput source="" label="Tag" fullWidth />
@@ -244,7 +236,7 @@ export const PlacesCreate = () => {
           </ArrayInput>
         </FormTab>
 
-        <FormTab label="Schedule & Services">
+        <FormTab label="Schedule">
           <ArrayInput source="schedule" label="Opening Hours">
             <SimpleFormIterator>
               <ArrayInput source="days" label="Days">
@@ -293,6 +285,9 @@ export const PlacesCreate = () => {
               </ArrayInput>
             </SimpleFormIterator>
           </ArrayInput>
+        </FormTab>
+
+        <FormTab label="Services">
           <ArrayInput source="tours" label="Tours">
             <SimpleFormIterator>
               <TextInput source="title" label="Tour Title" fullWidth />
@@ -309,7 +304,21 @@ export const PlacesCreate = () => {
           </ArrayInput>
         </FormTab>
 
-        <FormTab label="Advanced Options">
+        <FormTab label="VIP">
+          <TextInput
+            source="social_network.vip"
+            label="VIP URL"
+            validate={validateUrl}
+            fullWidth
+          />
+          <TextInput source="owner.name" label="Owner Name" fullWidth />
+          <TextInput source="owner.phone" label="Owner Phone" fullWidth />
+          <TextInput
+            source="vipEmail"
+            label="VIP Email"
+            validate={validateEmail}
+            fullWidth
+          />
           <TextInput source="vip_service.header" label="VIP Header" fullWidth />
           <TextInput
             source="vip_service.button"
