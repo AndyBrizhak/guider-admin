@@ -16,6 +16,8 @@ import {
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
+// Получаем API_URL
+const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7001";
 // Validation functions
 const validateRequired = required("This field is required");
 const validateEmail = email("Please enter a valid email address");
@@ -213,25 +215,95 @@ export const PlacesCreate = () => {
                 helperText="Enter full URL to image"
               />
               <FormDataConsumer>
-                {() => {
-                  // Получаем список изображений из ресурса images
+                {({ formData }) => {
+                  // Получаем провинцию и город из основной формы
+                  const selectedProvince = formData.address?.province;
+                  const selectedCity = formData.address?.city;
+
+                  // Строим фильтр для изображений
+                  const imageFilter: any = {};
+                  if (selectedProvince) {
+                    imageFilter.Province = selectedProvince;
+                  }
+                  if (selectedCity) {
+                    imageFilter.City = selectedCity;
+                  }
+
                   const { data: images = [], isLoading: isImagesLoading } =
                     useGetList("images", {
                       pagination: { page: 1, perPage: 100 },
                       sort: { field: "ImageName", order: "ASC" },
+                      filter: selectedProvince ? imageFilter : {},
                     });
-                  const imageChoices = images.map((img: any) => ({
-                    id: img.url || img.src || img.ImageName,
-                    name: img.ImageName || img.url || img.src,
-                  }));
+
+                  const imageChoices = images.map((img: any) => {
+                    // Создаем полный URL как в images-show.tsx
+                    const cleanPath = img.FilePath
+                      ? img.FilePath.replace(/^\/+/, "")
+                      : "";
+                    const fullImageUrl = cleanPath
+                      ? `${API_URL}/images/${cleanPath}`
+                      : "";
+
+                    return {
+                      id: fullImageUrl, // Сохраняем полный URL
+                      name: img.ImageName || img.url || img.src,
+                      place: img.Place,
+                      city: img.City,
+                      province: img.Province,
+                      src: fullImageUrl,
+                    };
+                  });
+
                   return (
                     <SelectInput
                       source=""
-                      label="Select from uploaded images"
+                      label={`Select from uploaded images${selectedProvince ? ` (${selectedProvince}${selectedCity ? `, ${selectedCity}` : ""})` : ""}`}
                       choices={imageChoices}
                       disabled={isImagesLoading}
                       fullWidth
                       allowEmpty
+                      helperText={
+                        !selectedProvince
+                          ? "Please select province first to filter images"
+                          : selectedCity
+                            ? `Showing images from ${selectedCity}, ${selectedProvince}`
+                            : `Showing images from ${selectedProvince}`
+                      }
+                      optionText={(choice) => (
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                          }}
+                        >
+                          {choice.src && (
+                            <img
+                              src={choice.src}
+                              alt={choice.name}
+                              style={{
+                                width: 32,
+                                height: 32,
+                                objectFit: "cover",
+                                borderRadius: 4,
+                              }}
+                            />
+                          )}
+                          <span>
+                            <b>{choice.name}</b>
+                            <br />
+                            <span style={{ fontSize: 12, color: "#888" }}>
+                              {choice.place ? `Place: ${choice.place}, ` : ""}
+                              {choice.city ? `City: ${choice.city}, ` : ""}
+                              {choice.province
+                                ? `Province: ${choice.province}`
+                                : ""}
+                            </span>
+                          </span>
+                        </span>
+                      )}
+                      optionValue="id" // Сохраняется полный URL
                     />
                   );
                 }}
