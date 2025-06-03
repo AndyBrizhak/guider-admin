@@ -106,7 +106,7 @@ export const PlacesCreate = () => {
           <RichTextInput source="description" label="Description" fullWidth />
         </FormTab>
 
-        <FormTab label="Address & Location">
+        <FormTab label="Address">
           <SelectInput
             source="address.country"
             label="Country"
@@ -153,6 +153,9 @@ export const PlacesCreate = () => {
             }}
           </FormDataConsumer>
           <TextInput source="address.street" label="Street Address" fullWidth />
+        </FormTab>
+
+        <FormTab label="Geo">
           <NumberInput
             source="latitude"
             label="Latitude"
