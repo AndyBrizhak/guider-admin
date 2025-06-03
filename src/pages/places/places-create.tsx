@@ -125,7 +125,7 @@ export const PlacesCreate = () => {
 
   return (
     <Create>
-      <TabbedForm onSubmit={handleSave}>
+      <TabbedForm onSubmit={handleSave} defaultValues={{ status: "draft" }}>
         <FormTab label="Main">
           <TextInput
             source="name"
@@ -161,7 +161,6 @@ export const PlacesCreate = () => {
               { id: "pending", name: "Pending" },
               { id: "draft", name: "Draft" },
             ]}
-            defaultValue="active"
             fullWidth
           />
         </FormTab>
