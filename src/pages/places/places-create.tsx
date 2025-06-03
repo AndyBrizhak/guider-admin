@@ -62,6 +62,12 @@ export const PlacesCreate = () => {
     },
   );
 
+  // Получаем список тегов из ресурса "tags"
+  const { data: tags = [], isLoading: isTagsLoading } = useGetList("tags", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name_en", order: "ASC" },
+  });
+
   const provinceChoices = provinces.map((province: any) => ({
     id: province.name,
     name: province.name,
@@ -388,7 +394,61 @@ export const PlacesCreate = () => {
               disableAdd={false}
               disableRemove={false}
             >
-              <TextInput source="" label="Tag" fullWidth />
+              <FormDataConsumer>
+                {() => {
+                  const tagChoices = tags.map((tag: any) => ({
+                    id: tag.url || tag.name_en,
+                    name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
+                    name_en: tag.name_en,
+                    name_sp: tag.name_sp,
+                    type: tag.type,
+                    url: tag.url,
+                  }));
+
+                  return (
+                    <>
+                      <SelectInput
+                        source=""
+                        label="Select from existing tags"
+                        choices={tagChoices}
+                        disabled={isTagsLoading}
+                        fullWidth
+                        allowEmpty
+                        helperText="Choose from existing tags or use manual input below"
+                        optionText={(choice) => (
+                          <span
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <span style={{ fontWeight: "bold" }}>
+                              {choice.name_en}
+                              {choice.name_sp && (
+                                <span
+                                  style={{
+                                    fontWeight: "normal",
+                                    marginLeft: 8,
+                                  }}
+                                >
+                                  / {choice.name_sp}
+                                </span>
+                              )}
+                            </span>
+                            <span style={{ fontSize: 12, color: "#666" }}>
+                              Type: {choice.type} | URL: {choice.url}
+                            </span>
+                          </span>
+                        )}
+                        optionValue="id"
+                      />
+                      <TextInput
+                        source=""
+                        label="Or enter custom tag"
+                        fullWidth
+                        helperText="Enter custom tag if not found in the list above"
+                      />
+                    </>
+                  );
+                }}
+              </FormDataConsumer>
             </SimpleFormIterator>
           </ArrayInput>
           <ArrayInput source="keywords" label="Keywords">
