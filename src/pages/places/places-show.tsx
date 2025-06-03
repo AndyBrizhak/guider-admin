@@ -225,7 +225,8 @@ const DescriptionDisplay = ({ record }: { record: any }) => {
 export const PlacesShow = () => (
   <Show>
     <TabbedShowLayout>
-      <Tab label="General">
+      {/* Main */}
+      <Tab label="Main">
         <div style={{ display: "flex", alignItems: "flex-start", gap: 32 }}>
           <div
             style={{
@@ -255,38 +256,12 @@ export const PlacesShow = () => (
               <span style={{ minWidth: 120, fontWeight: 500 }}>Status:</span>
               <TextField source="status" label={false} />
             </div>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-              <span style={{ minWidth: 120, fontWeight: 500, paddingTop: 4 }}>
-                Address:
-              </span>
-              <FunctionField
-                label={false}
-                render={(record: any) => {
-                  const addr = record.address;
-                  if (!addr) return "No address available";
-                  return (
-                    <div>
-                      <div>{addr.street}</div>
-                      <div>
-                        {addr.city}, {addr.province}
-                      </div>
-                      <div>{addr.country}</div>
-                    </div>
-                  );
-                }}
-              />
-            </div>
-          </div>
-          <div style={{ minWidth: 320, textAlign: "center" }}>
-            <FunctionField
-              label=""
-              render={(record: any) => <ImageGallery record={record} />}
-            />
           </div>
         </div>
       </Tab>
 
-      <Tab label="Description & Tags">
+      {/* Description */}
+      <Tab label="Description">
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div>
             <h3 style={{ marginBottom: "12px", color: "#333" }}>Description</h3>
@@ -295,306 +270,28 @@ export const PlacesShow = () => (
               render={(record: any) => <DescriptionDisplay record={record} />}
             />
           </div>
-
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Tags</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const tags = record?.tags;
-                if (!tags || !tags.length || (tags.length === 1 && !tags[0])) {
-                  return <span>No tags available</span>;
-                }
-                return (
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}
-                  >
-                    {tags
-                      .filter((tag: string) => tag && tag.trim())
-                      .map((tag: string, index: number) => (
-                        <span
-                          key={index}
-                          style={{
-                            background: "#e3f2fd",
-                            color: "#1976d2",
-                            padding: "4px 8px",
-                            borderRadius: "16px",
-                            fontSize: "12px",
-                            fontWeight: "500",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                  </div>
-                );
-              }}
-            />
-          </div>
-
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Keywords</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const keywords = record?.keywords;
-                if (
-                  !keywords ||
-                  !keywords.length ||
-                  (keywords.length === 1 && !keywords[0])
-                ) {
-                  return <span>No keywords available</span>;
-                }
-                return (
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}
-                  >
-                    {keywords
-                      .filter((keyword: string) => keyword && keyword.trim())
-                      .map((keyword: string, index: number) => (
-                        <span
-                          key={index}
-                          style={{
-                            background: "#f3e5f5",
-                            color: "#7b1fa2",
-                            padding: "4px 8px",
-                            borderRadius: "16px",
-                            fontSize: "12px",
-                            fontWeight: "500",
-                          }}
-                        >
-                          {keyword}
-                        </span>
-                      ))}
-                  </div>
-                );
-              }}
-            />
-          </div>
         </div>
       </Tab>
 
-      <Tab label="Contact & Location">
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 32 }}>
-          <div style={{ flex: 1 }}>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>
-              Contact Information
-            </h3>
+      {/* Address */}
+      <Tab label="Address">
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <span style={{ minWidth: 120, fontWeight: 500, paddingTop: 4 }}>
+              Address:
+            </span>
             <FunctionField
               label={false}
-              render={(record: any) => <ContactDisplay record={record} />}
-            />
-
-            {/* Owner information */}
-            <div style={{ marginTop: "24px" }}>
-              <h3 style={{ marginBottom: "12px", color: "#333" }}>
-                Owner Information
-              </h3>
-              <FunctionField
-                label={false}
-                render={(record: any) => {
-                  const owner = record?.owner;
-                  if (!owner)
-                    return <span>No owner information available</span>;
-
-                  if (Array.isArray(owner)) {
-                    return (
-                      <div>
-                        {owner.map((o: any, index: number) => (
-                          <div key={index} style={{ marginBottom: "8px" }}>
-                            <div>
-                              <strong>Name:</strong> {o.name || "Not specified"}
-                            </div>
-                            <div>
-                              <strong>Phone:</strong>{" "}
-                              {o.phone || "Not specified"}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }
-
-                  return (
+              render={(record: any) => {
+                const addr = record.address;
+                if (!addr) return "No address available";
+                return (
+                  <div>
+                    <div>{addr.street}</div>
                     <div>
-                      <div>
-                        <strong>Name:</strong> {owner.name || "Not specified"}
-                      </div>
-                      <div>
-                        <strong>Phone:</strong> {owner.phone || "Not specified"}
-                      </div>
+                      {addr.city}, {addr.province}
                     </div>
-                  );
-                }}
-              />
-            </div>
-          </div>
-
-          <div style={{ flex: 1 }}>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Location</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => <LocationDisplay record={record} />}
-            />
-          </div>
-        </div>
-      </Tab>
-
-      <Tab label="Schedule & Services">
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Schedule</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => <ScheduleDisplay record={record} />}
-            />
-          </div>
-
-          {/* Tours if available */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Tours</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const tours = record?.tours;
-                if (!tours || !tours.length) {
-                  return <span>No tours available</span>;
-                }
-
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                    }}
-                  >
-                    {tours.map((tour: any, index: number) => (
-                      <div
-                        key={index}
-                        style={{
-                          padding: "12px",
-                          border: "1px solid #eee",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        <div style={{ fontWeight: "500", marginBottom: "8px" }}>
-                          {tour.title}
-                        </div>
-                        <div style={{ marginBottom: "4px" }}>
-                          <strong>Name:</strong> {tour.name}
-                        </div>
-                        <div style={{ marginBottom: "4px" }}>
-                          <strong>Price:</strong> {tour.price}
-                        </div>
-                        <div style={{ marginBottom: "4px" }}>
-                          <strong>Time:</strong> {tour.time}
-                        </div>
-                        {tour.image && (
-                          <img
-                            src={tour.image}
-                            alt={tour.name}
-                            style={{
-                              maxWidth: "200px",
-                              maxHeight: "120px",
-                              marginTop: "8px",
-                              border: "1px solid #ddd",
-                              borderRadius: "4px",
-                            }}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                );
-              }}
-            />
-          </div>
-
-          {/* VIP Services */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>
-              VIP Services
-            </h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const vipService = record?.vip_service;
-                const vipDescription = record?.vip_service_description;
-                const vipEmail = record?.vipEmail;
-
-                if (!vipService && !vipDescription && !vipEmail) {
-                  return <span>No VIP services available</span>;
-                }
-
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                    }}
-                  >
-                    {vipService && (
-                      <div>
-                        <div>
-                          <strong>Header:</strong> {vipService.header}
-                        </div>
-                        <div>
-                          <strong>Button:</strong> {vipService.button}
-                        </div>
-                      </div>
-                    )}
-                    {vipDescription && (
-                      <div>
-                        <div>
-                          <strong>Header:</strong> {vipDescription.header}
-                        </div>
-                        <div>
-                          <strong>Description:</strong>
-                        </div>
-                        {vipDescription.description?.map(
-                          (desc: string, index: number) => (
-                            <div
-                              key={index}
-                              style={{
-                                marginLeft: "16px",
-                                marginBottom: "4px",
-                              }}
-                            >
-                              • {desc}
-                            </div>
-                          ),
-                        )}
-                        <div>
-                          <strong>Button:</strong> {vipDescription.button}
-                        </div>
-                        {vipDescription.image && (
-                          <img
-                            src={vipDescription.image}
-                            alt="VIP Service"
-                            style={{
-                              maxWidth: "200px",
-                              maxHeight: "120px",
-                              marginTop: "8px",
-                              border: "1px solid #ddd",
-                              borderRadius: "4px",
-                            }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {vipEmail && (
-                      <div>
-                        <strong>VIP Email:</strong>
-                        <a
-                          href={`mailto:${vipEmail}`}
-                          style={{ color: "#1976d2", marginLeft: "8px" }}
-                        >
-                          {vipEmail}
-                        </a>
-                      </div>
-                    )}
+                    <div>{addr.country}</div>
                   </div>
                 );
               }}
@@ -603,166 +300,288 @@ export const PlacesShow = () => (
         </div>
       </Tab>
 
-      <Tab label="Additional Info">
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {/* About Client */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>
-              About Client
-            </h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const aboutClient = record?.about_client;
-                if (!aboutClient) return <span>No information available</span>;
+      {/* Geo */}
+      <Tab label="Geo">
+        <div style={{ flex: 1 }}>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Location</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => <LocationDisplay record={record} />}
+          />
+        </div>
+      </Tab>
 
-                return (
-                  <div>
-                    <div style={{ marginBottom: "8px" }}>
-                      <strong>{aboutClient.header}</strong>
-                    </div>
-                    {aboutClient.description?.map(
-                      (desc: string, index: number) => (
-                        <div key={index} style={{ marginBottom: "4px" }}>
-                          • {desc}
-                        </div>
-                      ),
-                    )}
-                    {aboutClient.img && (
-                      <img
-                        src={aboutClient.img}
-                        alt="About Client"
-                        style={{
-                          maxWidth: "200px",
-                          maxHeight: "120px",
-                          marginTop: "8px",
-                          border: "1px solid #ddd",
-                          borderRadius: "4px",
-                        }}
-                      />
-                    )}
-                  </div>
-                );
-              }}
-            />
-          </div>
+      {/* Contacts */}
+      <Tab label="Contacts">
+        <div style={{ flex: 1 }}>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>
+            Contact Information
+          </h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => <ContactDisplay record={record} />}
+          />
+        </div>
+      </Tab>
 
-          {/* Why Client Section */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>
-              Why Choose Us
-            </h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const whyClient = record?.why_client_section;
-                if (!whyClient) return <span>No information available</span>;
+      {/* Media */}
+      <Tab label="Media">
+        <div style={{ minWidth: 320, textAlign: "center" }}>
+          <FunctionField
+            label=""
+            render={(record: any) => <ImageGallery record={record} />}
+          />
+        </div>
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Preview</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const previewLink = record?.preview_link;
+              if (!previewLink) return <span>No preview available</span>;
 
-                return (
-                  <div>
-                    <div style={{ marginBottom: "12px", fontWeight: "500" }}>
-                      {whyClient.header}
-                    </div>
-                    {whyClient.data?.map((item: any, index: number) => (
-                      <div
+              return (
+                <a
+                  href={previewLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#1976d2", textDecoration: "underline" }}
+                >
+                  {previewLink}
+                </a>
+              );
+            }}
+          />
+        </div>
+      </Tab>
+
+      {/* Tags */}
+      <Tab label="Tags">
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Tags</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const tags = record?.tags;
+              if (!tags || !tags.length || (tags.length === 1 && !tags[0])) {
+                return <span>No tags available</span>;
+              }
+              return (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {tags
+                    .filter((tag: string) => tag && tag.trim())
+                    .map((tag: string, index: number) => (
+                      <span
                         key={index}
                         style={{
-                          padding: "8px",
-                          border: "1px solid #eee",
-                          borderRadius: "4px",
-                          marginBottom: "8px",
+                          background: "#e3f2fd",
+                          color: "#1976d2",
+                          padding: "4px 8px",
+                          borderRadius: "16px",
+                          fontSize: "12px",
+                          fontWeight: "500",
                         }}
                       >
-                        <div style={{ fontWeight: "500", color: "#1976d2" }}>
-                          {item.num}
-                        </div>
-                        <div style={{ fontWeight: "500" }}>{item.header}</div>
-                        <div style={{ fontSize: "14px", color: "#666" }}>
-                          {item.description}
-                        </div>
-                      </div>
+                        {tag}
+                      </span>
                     ))}
-                  </div>
-                );
-              }}
-            />
-          </div>
-
-          {/* Additional Information */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>
-              Additional Information
-            </h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const additionalInfo = record?.additional_information;
-                if (!additionalInfo)
-                  return <span>No additional information available</span>;
-
-                return (
-                  <div>
-                    <div style={{ marginBottom: "12px", fontWeight: "500" }}>
-                      {additionalInfo.header}
-                    </div>
-                    {additionalInfo.data?.map((item: any, index: number) => (
-                      <div
+                </div>
+              );
+            }}
+          />
+        </div>
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Keywords</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const keywords = record?.keywords;
+              if (
+                !keywords ||
+                !keywords.length ||
+                (keywords.length === 1 && !keywords[0])
+              ) {
+                return <span>No keywords available</span>;
+              }
+              return (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {keywords
+                    .filter((keyword: string) => keyword && keyword.trim())
+                    .map((keyword: string, index: number) => (
+                      <span
                         key={index}
                         style={{
-                          padding: "8px",
-                          border: "1px solid #eee",
-                          borderRadius: "4px",
-                          marginBottom: "8px",
+                          background: "#f3e5f5",
+                          color: "#7b1fa2",
+                          padding: "4px 8px",
+                          borderRadius: "16px",
+                          fontSize: "12px",
+                          fontWeight: "500",
                         }}
                       >
-                        <div
+                        {keyword}
+                      </span>
+                    ))}
+                </div>
+              );
+            }}
+          />
+        </div>
+      </Tab>
+
+      {/* Schedule */}
+      <Tab label="Schedule">
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Schedule</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => <ScheduleDisplay record={record} />}
+          />
+        </div>
+      </Tab>
+
+      {/* Services */}
+      <Tab label="Services">
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Tours</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const tours = record?.tours;
+              if (!tours || !tours.length) {
+                return <span>No tours available</span>;
+              }
+
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
+                  {tours.map((tour: any, index: number) => (
+                    <div
+                      key={index}
+                      style={{
+                        padding: "12px",
+                        border: "1px solid #eee",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      <div style={{ fontWeight: "500", marginBottom: "8px" }}>
+                        {tour.title}
+                      </div>
+                      <div style={{ marginBottom: "4px" }}>
+                        <strong>Name:</strong> {tour.name}
+                      </div>
+                      <div style={{ marginBottom: "4px" }}>
+                        <strong>Price:</strong> {tour.price}
+                      </div>
+                      <div style={{ marginBottom: "4px" }}>
+                        <strong>Time:</strong> {tour.time}
+                      </div>
+                      {tour.image && (
+                        <img
+                          src={tour.image}
+                          alt={tour.name}
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
+                            maxWidth: "200px",
+                            maxHeight: "120px",
+                            marginTop: "8px",
+                            border: "1px solid #ddd",
+                            borderRadius: "4px",
                           }}
-                        >
-                          {item.icon && <span>{item.icon}</span>}
-                          <div>
-                            <div style={{ fontWeight: "500" }}>
-                              {item.header}
-                            </div>
-                            <div style={{ fontSize: "14px", color: "#666" }}>
-                              {item.description}
-                            </div>
-                          </div>
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            }}
+          />
+        </div>
+      </Tab>
+
+      {/* VIP */}
+      <Tab label="VIP">
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>VIP URL</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const vip = record?.social_network?.vip;
+              if (!vip) return <span>No VIP URL</span>;
+              return (
+                <a
+                  href={vip}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#1976d2" }}
+                >
+                  {vip}
+                </a>
+              );
+            }}
+          />
+        </div>
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Owner</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const owner = record?.owner;
+              if (!owner) return <span>No owner information available</span>;
+
+              if (Array.isArray(owner)) {
+                return (
+                  <div>
+                    {owner.map((o: any, index: number) => (
+                      <div key={index} style={{ marginBottom: "8px" }}>
+                        <div>
+                          <strong>Name:</strong> {o.name || "Not specified"}
+                        </div>
+                        <div>
+                          <strong>Phone:</strong> {o.phone || "Not specified"}
                         </div>
                       </div>
                     ))}
                   </div>
                 );
-              }}
-            />
-          </div>
+              }
 
-          {/* Preview Link */}
-          <div>
-            <h3 style={{ marginBottom: "12px", color: "#333" }}>Preview</h3>
-            <FunctionField
-              label={false}
-              render={(record: any) => {
-                const previewLink = record?.preview_link;
-                if (!previewLink) return <span>No preview available</span>;
-
-                return (
-                  <a
-                    href={previewLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "#1976d2", textDecoration: "underline" }}
-                  >
-                    {previewLink}
-                  </a>
-                );
-              }}
-            />
-          </div>
+              return (
+                <div>
+                  <div>
+                    <strong>Name:</strong> {owner.name || "Not specified"}
+                  </div>
+                  <div>
+                    <strong>Phone:</strong> {owner.phone || "Not specified"}
+                  </div>
+                </div>
+              );
+            }}
+          />
         </div>
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>VIP Email</h3>
+          <FunctionField
+            label={false}
+            render={(record: any) => {
+              const vipEmail = record?.vipEmail;
+              if (!vipEmail) return <span>No VIP Email</span>;
+              return (
+                <a
+                  href={`mailto:${vipEmail}`}
+                  style={{ color: "#1976d2", marginLeft: "8px" }}
+                >
+                  {vipEmail}
+                </a>
+              );
+            }}
+          />
+        </div>
+        {/* Остальные VIP поля (header, button, description и т.д.) можно добавить аналогично */}
       </Tab>
     </TabbedShowLayout>
   </Show>
