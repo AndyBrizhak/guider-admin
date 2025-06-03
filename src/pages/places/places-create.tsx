@@ -64,7 +64,7 @@ export const PlacesCreate = () => {
 
   // Получаем список тегов из ресурса "tags"
   const { data: tags = [], isLoading: isTagsLoading } = useGetList("tags", {
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: 1000 },
     sort: { field: "name_en", order: "ASC" },
   });
 
@@ -199,7 +199,7 @@ export const PlacesCreate = () => {
               const province = formData.address?.province;
               const { data: cities = [], isLoading: isCitiesLoading } =
                 useGetList("cities", {
-                  pagination: { page: 1, perPage: 100 },
+                  pagination: { page: 1, perPage: 1000 },
                   sort: { field: "name", order: "ASC" },
                   filter: province ? { province } : {},
                 });
@@ -389,80 +389,21 @@ export const PlacesCreate = () => {
 
         <FormTab label="Tags">
           <ArrayInput source="tags" label="Tags">
-            <SimpleFormIterator
-              disableReordering={false}
-              disableAdd={false}
-              disableRemove={false}
-            >
-              <FormDataConsumer>
-                {() => {
-                  const tagChoices = tags.map((tag: any) => ({
-                    id: tag.url || tag.name_en,
-                    name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
-                    name_en: tag.name_en,
-                    name_sp: tag.name_sp,
-                    type: tag.type,
-                    url: tag.url,
-                  }));
-
-                  return (
-                    <>
-                      <SelectInput
-                        source=""
-                        label="Select from existing tags"
-                        choices={tagChoices}
-                        disabled={isTagsLoading}
-                        fullWidth
-                        allowEmpty
-                        helperText="Choose from existing tags or use manual input below"
-                        optionText={(choice) => (
-                          <span
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <span style={{ fontWeight: "bold" }}>
-                              {choice.name_en}
-                              {choice.name_sp && (
-                                <span
-                                  style={{
-                                    fontWeight: "normal",
-                                    marginLeft: 8,
-                                  }}
-                                >
-                                  / {choice.name_sp}
-                                </span>
-                              )}
-                            </span>
-                            <span style={{ fontSize: 12, color: "#666" }}>
-                              Type: {choice.type} | URL: {choice.url}
-                            </span>
-                          </span>
-                        )}
-                        optionValue="id"
-                      />
-                      <TextInput
-                        source=""
-                        label="Or enter custom tag"
-                        fullWidth
-                        helperText="Enter custom tag if not found in the list above"
-                      />
-                    </>
-                  );
-                }}
-              </FormDataConsumer>
-            </SimpleFormIterator>
-          </ArrayInput>
-          <ArrayInput source="keywords" label="Keywords">
-            <SimpleFormIterator
-              addButton={
-                <span style={{ fontSize: "14px" }}>+ Add Keyword</span>
-              }
-              removeButton={
-                <span style={{ fontSize: "12px", color: "#d32f2f" }}>
-                  × Remove
-                </span>
-              }
-            >
-              <TextInput source="" label="Keyword" fullWidth />
+            <SimpleFormIterator>
+              <SelectInput
+                source=""
+                label="Tag"
+                choices={tags.map((tag: any) => ({
+                  id: tag.url || tag.name_en,
+                  name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
+                }))}
+                allowEmpty
+                fullWidth
+                disabled={isTagsLoading}
+                helperText="Выберите тег из списка"
+                optionText="name"
+                optionValue="id"
+              />
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
