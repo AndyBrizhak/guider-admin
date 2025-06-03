@@ -13,6 +13,9 @@ import {
   maxLength,
   useGetList,
   FormDataConsumer,
+  useNotify,
+  useRedirect,
+  useCreate,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -64,9 +67,65 @@ export const PlacesCreate = () => {
     name: province.name,
   }));
 
+  // Для кастомной отправки с фильтрацией пустых значений
+  const notify = useNotify();
+  const redirect = useRedirect();
+  const [create] = useCreate();
+
+  // Рекурсивно удаляет пустые строки, null, undefined, пустые массивы/объекты
+  function removeEmpty(obj: any) {
+    if (Array.isArray(obj)) {
+      return obj
+        .map(removeEmpty)
+        .filter(
+          (v) =>
+            v !== undefined &&
+            v !== null &&
+            v !== "" &&
+            !(typeof v === "object" && Object.keys(v).length === 0),
+        );
+    } else if (typeof obj === "object" && obj !== null) {
+      const out: any = {};
+      Object.entries(obj).forEach(([k, v]) => {
+        const cleaned = removeEmpty(v);
+        if (
+          cleaned !== undefined &&
+          cleaned !== null &&
+          cleaned !== "" &&
+          !(typeof cleaned === "object" && Object.keys(cleaned).length === 0) &&
+          !(Array.isArray(cleaned) && cleaned.length === 0)
+        ) {
+          out[k] = cleaned;
+        }
+      });
+      return out;
+    }
+    return obj;
+  }
+
+  // Обработчик отправки формы
+  const handleSave = (values: any) => {
+    const cleaned = removeEmpty(values);
+    create(
+      "places",
+      { data: cleaned },
+      {
+        onSuccess: () => {
+          notify("Place created", { type: "success" });
+          redirect("list", "places");
+        },
+        onError: (error: any) => {
+          notify(typeof error === "string" ? error : error.message || "Error", {
+            type: "error",
+          });
+        },
+      },
+    );
+  };
+
   return (
     <Create>
-      <TabbedForm>
+      <TabbedForm onSubmit={handleSave}>
         <FormTab label="Main">
           <TextInput
             source="name"
