@@ -264,7 +264,11 @@ export const PlacesCreate = () => {
 
         <FormTab label="Media">
           <ArrayInput source="img_link" label="Images">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput
                 source=""
                 label="Image URL"
@@ -379,12 +383,25 @@ export const PlacesCreate = () => {
 
         <FormTab label="Tags">
           <ArrayInput source="tags" label="Tags">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="" label="Tag" fullWidth />
             </SimpleFormIterator>
           </ArrayInput>
           <ArrayInput source="keywords" label="Keywords">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              addButton={
+                <span style={{ fontSize: "14px" }}>+ Add Keyword</span>
+              }
+              removeButton={
+                <span style={{ fontSize: "12px", color: "#d32f2f" }}>
+                  × Remove
+                </span>
+              }
+            >
               <TextInput source="" label="Keyword" fullWidth />
             </SimpleFormIterator>
           </ArrayInput>
@@ -392,9 +409,17 @@ export const PlacesCreate = () => {
 
         <FormTab label="Schedule">
           <ArrayInput source="schedule" label="Opening Hours">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <ArrayInput source="days" label="Days">
-                <SimpleFormIterator>
+                <SimpleFormIterator
+                  disableReordering={false}
+                  disableAdd={false}
+                  disableRemove={false}
+                >
                   <SelectInput
                     source=""
                     choices={[
@@ -410,7 +435,11 @@ export const PlacesCreate = () => {
                 </SimpleFormIterator>
               </ArrayInput>
               <ArrayInput source="hours" label="Operating Hours">
-                <SimpleFormIterator>
+                <SimpleFormIterator
+                  disableReordering={false}
+                  disableAdd={false}
+                  disableRemove={false}
+                >
                   <TextInput
                     source="start"
                     label="Start Time"
@@ -424,7 +453,11 @@ export const PlacesCreate = () => {
                 </SimpleFormIterator>
               </ArrayInput>
               <ArrayInput source="lunch" label="Lunch Break (optional)">
-                <SimpleFormIterator>
+                <SimpleFormIterator
+                  disableReordering={false}
+                  disableAdd={false}
+                  disableRemove={false}
+                >
                   <TextInput
                     source="start"
                     label="Lunch Start"
@@ -443,7 +476,11 @@ export const PlacesCreate = () => {
 
         <FormTab label="Services">
           <ArrayInput source="tours" label="Tours">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="title" label="Tour Title" fullWidth />
               <TextInput source="name" label="Tour Name" fullWidth />
               <TextInput source="price" label="Price" fullWidth />
@@ -499,7 +536,11 @@ export const PlacesCreate = () => {
             source="vip_service_description.description"
             label="Description Points"
           >
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="" label="Description Point" fullWidth />
             </SimpleFormIterator>
           </ArrayInput>
@@ -518,7 +559,11 @@ export const PlacesCreate = () => {
             source="about_client.description"
             label="About Description"
           >
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="" label="Description Point" fullWidth />
             </SimpleFormIterator>
           </ArrayInput>
@@ -528,7 +573,11 @@ export const PlacesCreate = () => {
             fullWidth
           />
           <ArrayInput source="why_client_section.data" label="Reasons">
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="num" label="Number/Order" />
               <TextInput source="header" label="Title" fullWidth />
               <TextInput
@@ -548,7 +597,11 @@ export const PlacesCreate = () => {
             source="additional_information.data"
             label="Information Items"
           >
-            <SimpleFormIterator>
+            <SimpleFormIterator
+              disableReordering={false}
+              disableAdd={false}
+              disableRemove={false}
+            >
               <TextInput source="icon" label="Icon" />
               <TextInput source="header" label="Title" fullWidth />
               <TextInput
