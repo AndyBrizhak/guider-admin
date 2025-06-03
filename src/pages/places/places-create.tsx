@@ -212,6 +212,30 @@ export const PlacesCreate = () => {
                 fullWidth
                 helperText="Enter full URL to image"
               />
+              <FormDataConsumer>
+                {() => {
+                  // Получаем список изображений из ресурса images
+                  const { data: images = [], isLoading: isImagesLoading } =
+                    useGetList("images", {
+                      pagination: { page: 1, perPage: 100 },
+                      sort: { field: "ImageName", order: "ASC" },
+                    });
+                  const imageChoices = images.map((img: any) => ({
+                    id: img.url || img.src || img.ImageName,
+                    name: img.ImageName || img.url || img.src,
+                  }));
+                  return (
+                    <SelectInput
+                      source=""
+                      label="Select from uploaded images"
+                      choices={imageChoices}
+                      disabled={isImagesLoading}
+                      fullWidth
+                      allowEmpty
+                    />
+                  );
+                }}
+              </FormDataConsumer>
             </SimpleFormIterator>
           </ArrayInput>
           <TextInput
