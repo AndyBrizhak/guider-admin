@@ -444,12 +444,16 @@ export const PlacesCreate = () => {
                   <TextInput
                     source="start"
                     label="Start Time"
-                    placeholder="09:00"
+                    placeholder="09:00 AM"
+                    helperText="Format: HH:MM AM/PM"
+                    fullWidth
                   />
                   <TextInput
                     source="end"
                     label="End Time"
-                    placeholder="17:00"
+                    placeholder="05:00 PM"
+                    helperText="Format: HH:MM AM/PM"
+                    fullWidth
                   />
                 </SimpleFormIterator>
               </ArrayInput>
@@ -462,12 +466,16 @@ export const PlacesCreate = () => {
                   <TextInput
                     source="start"
                     label="Lunch Start"
-                    placeholder="12:00"
+                    placeholder="12:00 PM"
+                    helperText="Format: HH:MM AM/PM"
+                    fullWidth
                   />
                   <TextInput
                     source="end"
                     label="Lunch End"
-                    placeholder="13:00"
+                    placeholder="01:00 PM"
+                    helperText="Format: HH:MM AM/PM"
+                    fullWidth
                   />
                 </SimpleFormIterator>
               </ArrayInput>
