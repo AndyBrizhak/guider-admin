@@ -57,6 +57,8 @@ const validateLongitude = (value: number) => {
 
 // Функция для трансформации данных при загрузке
 const transform = (data: any) => {
+  if (!data) return data;
+
   const transformed = { ...data };
 
   // Преобразуем coordinates в latitude/longitude для формы, если есть
@@ -160,9 +162,8 @@ export const PlacesEdit = () => {
 
   // Обработчик отправки формы
   const handleSave = (values: any) => {
-    // Применяем transform к данным перед обработкой
-    const transformedValues = transform(values);
-    const cleaned = transformForServer(transformedValues);
+    // Убираем двойную трансформацию - используем только transformForServer
+    const cleaned = transformForServer(values);
 
     update(
       "places",
@@ -182,7 +183,7 @@ export const PlacesEdit = () => {
   };
 
   return (
-    <Edit mutationMode="pessimistic">
+    <Edit mutationMode="pessimistic" transform={transform}>
       <TabbedForm onSubmit={handleSave}>
         <FormTab label="Main">
           <TextInput
