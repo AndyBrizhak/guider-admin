@@ -160,7 +160,9 @@ export const PlacesEdit = () => {
 
   // Обработчик отправки формы
   const handleSave = (values: any) => {
-    const cleaned = transformForServer(values);
+    // Применяем transform к данным перед обработкой
+    const transformedValues = transform(values);
+    const cleaned = transformForServer(transformedValues);
 
     update(
       "places",
@@ -180,7 +182,7 @@ export const PlacesEdit = () => {
   };
 
   return (
-    <Edit transform={transform}>
+    <Edit mutationMode="pessimistic">
       <TabbedForm onSubmit={handleSave}>
         <FormTab label="Main">
           <TextInput
