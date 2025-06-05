@@ -186,293 +186,313 @@ export const PlacesEdit = () => {
     <Edit mutationMode="pessimistic" transform={transform}>
       <TabbedForm onSubmit={handleSave}>
         <FormTab label="Main">
-          <TextInput
-            source="name"
-            label="Name"
-            validate={validateRequired}
-            fullWidth
-          />
-          <SelectInput
-            source="category"
-            label="Category"
-            choices={[
-              { id: "to-eat", name: "Places to Eat" },
-              { id: "adventures", name: "Adventures" },
-              { id: "shops", name: "Shops" },
-              { id: "services", name: "Services" },
-            ]}
-            validate={validateRequired}
-            fullWidth
-          />
-          <TextInput
-            source="url"
-            label="URL Slug"
-            validate={[validateRequired, minLength(2), maxLength(100)]}
-            helperText="Unique identifier for the URL (e.g., 'my-restaurant')"
-            fullWidth
-          />
-          <SelectInput
-            source="status"
-            label="Status"
-            choices={[
-              { id: "active", name: "Active" },
-              { id: "inactive", name: "Inactive" },
-              { id: "pending", name: "Pending" },
-              { id: "draft", name: "Draft" },
-            ]}
-            fullWidth
-          />
+          <div style={{ maxWidth: 500 }}>
+            <TextInput
+              source="name"
+              label="Name"
+              validate={validateRequired}
+              fullWidth
+            />
+            <SelectInput
+              source="category"
+              label="Category"
+              choices={[
+                { id: "to-eat", name: "Places to Eat" },
+                { id: "adventures", name: "Adventures" },
+                { id: "shops", name: "Shops" },
+                { id: "services", name: "Services" },
+              ]}
+              validate={validateRequired}
+              fullWidth
+            />
+            <TextInput
+              source="url"
+              label="URL Slug"
+              validate={[validateRequired, minLength(2), maxLength(100)]}
+              helperText="Unique identifier for the URL (e.g., 'my-restaurant')"
+              fullWidth
+            />
+            <SelectInput
+              source="status"
+              label="Status"
+              choices={[
+                { id: "active", name: "Active" },
+                { id: "inactive", name: "Inactive" },
+                { id: "pending", name: "Pending" },
+                { id: "draft", name: "Draft" },
+              ]}
+              fullWidth
+            />
+          </div>
         </FormTab>
 
         <FormTab label="Description">
-          <RichTextInput source="description" label="Description" fullWidth />
+          <div style={{ width: "75vw", maxWidth: "75vw" }}>
+            <RichTextInput source="description" label="Description" fullWidth />
+          </div>
         </FormTab>
 
         <FormTab label="Address">
-          <SelectInput
-            source="address.country"
-            label="Country"
-            choices={[
-              { id: "Costa Rica", name: "Costa Rica" },
-              { id: "Other", name: "Other" },
-            ]}
-            defaultValue="Costa Rica"
-            fullWidth
-          />
-          <SelectInput
-            source="address.province"
-            label="Province/State"
-            choices={provinceChoices}
-            disabled={isProvincesLoading}
-            validate={validateRequired}
-            fullWidth
-          />
-          <FormDataConsumer>
-            {({ formData }) => {
-              const province = formData.address?.province;
-              const { data: cities = [], isLoading: isCitiesLoading } =
-                useGetList("cities", {
-                  pagination: { page: 1, perPage: 1000 },
-                  sort: { field: "name", order: "ASC" },
-                  filter: province ? { province } : {},
-                });
+          <div style={{ maxWidth: 500 }}>
+            <SelectInput
+              source="address.country"
+              label="Country"
+              choices={[
+                { id: "Costa Rica", name: "Costa Rica" },
+                { id: "Other", name: "Other" },
+              ]}
+              defaultValue="Costa Rica"
+              fullWidth
+            />
+            <SelectInput
+              source="address.province"
+              label="Province/State"
+              choices={provinceChoices}
+              disabled={isProvincesLoading}
+              validate={validateRequired}
+              fullWidth
+            />
+            <FormDataConsumer>
+              {({ formData }) => {
+                const province = formData.address?.province;
+                const { data: cities = [], isLoading: isCitiesLoading } =
+                  useGetList("cities", {
+                    pagination: { page: 1, perPage: 1000 },
+                    sort: { field: "name", order: "ASC" },
+                    filter: province ? { province } : {},
+                  });
 
-              const cityChoices = cities.map((city: any) => ({
-                id: city.name,
-                name: city.name,
-              }));
+                const cityChoices = cities.map((city: any) => ({
+                  id: city.name,
+                  name: city.name,
+                }));
 
-              return (
-                <SelectInput
-                  source="address.city"
-                  label="City"
-                  choices={cityChoices}
-                  disabled={isCitiesLoading}
-                  validate={validateRequired}
-                  fullWidth
-                />
-              );
-            }}
-          </FormDataConsumer>
-          <TextInput source="address.street" label="Street Address" fullWidth />
+                return (
+                  <SelectInput
+                    source="address.city"
+                    label="City"
+                    choices={cityChoices}
+                    disabled={isCitiesLoading}
+                    validate={validateRequired}
+                    fullWidth
+                  />
+                );
+              }}
+            </FormDataConsumer>
+            <TextInput
+              source="address.street"
+              label="Street Address"
+              fullWidth
+            />
+          </div>
         </FormTab>
 
         <FormTab label="Geo">
-          <NumberInput
-            source="latitude"
-            label="Latitude"
-            step={0.0000001}
-            validate={validateLatitude}
-            helperText="Latitude coordinate (-90 to 90) - Optional"
-            fullWidth
-          />
-          <NumberInput
-            source="longitude"
-            label="Longitude"
-            step={0.0000001}
-            validate={validateLongitude}
-            helperText="Longitude coordinate (-180 to 180) - Optional"
-            fullWidth
-          />
+          <div style={{ maxWidth: 350 }}>
+            <NumberInput
+              source="latitude"
+              label="Latitude"
+              step={0.0000001}
+              validate={validateLatitude}
+              helperText="Latitude coordinate (-90 to 90) - Optional"
+              fullWidth
+            />
+            <NumberInput
+              source="longitude"
+              label="Longitude"
+              step={0.0000001}
+              validate={validateLongitude}
+              helperText="Longitude coordinate (-180 to 180) - Optional"
+              fullWidth
+            />
+          </div>
         </FormTab>
 
         <FormTab label="Contacts">
-          <TextInput
-            source="phone.callable"
-            label="Phone Number"
-            helperText="Main contact number"
-            fullWidth
-          />
-          <TextInput
-            source="phone.whatsapp"
-            label="WhatsApp Number"
-            helperText="WhatsApp contact number"
-            fullWidth
-          />
-          <TextInput
-            source="social_network.facebook"
-            label="Facebook URL"
-            validate={validateUrl}
-            fullWidth
-          />
-          <TextInput
-            source="social_network.instagram"
-            label="Instagram URL"
-            validate={validateUrl}
-            fullWidth
-          />
+          <div style={{ maxWidth: 500 }}>
+            <TextInput
+              source="phone.callable"
+              label="Phone Number"
+              helperText="Main contact number"
+              fullWidth
+            />
+            <TextInput
+              source="phone.whatsapp"
+              label="WhatsApp Number"
+              helperText="WhatsApp contact number"
+              fullWidth
+            />
+            <TextInput
+              source="social_network.facebook"
+              label="Facebook URL"
+              validate={validateUrl}
+              fullWidth
+            />
+            <TextInput
+              source="social_network.instagram"
+              label="Instagram URL"
+              validate={validateUrl}
+              fullWidth
+            />
+          </div>
         </FormTab>
 
         <FormTab label="Media">
-          <ArrayInput source="img_link" label="Images">
-            <SimpleFormIterator
-              disableReordering={false}
-              disableAdd={false}
-              disableRemove={false}
-            >
-              <TextInput
-                source=""
-                label="Image URL"
-                validate={validateUrl}
-                fullWidth
-                helperText="Enter full URL to image"
-              />
-              <FormDataConsumer>
-                {({ formData }) => {
-                  // Получаем провинцию и город из основной формы
-                  const selectedProvince = formData.address?.province;
-                  const selectedCity = formData.address?.city;
+          <div style={{ maxWidth: 600 }}>
+            <ArrayInput source="img_link" label="Images">
+              <SimpleFormIterator
+                disableReordering={false}
+                disableAdd={false}
+                disableRemove={false}
+              >
+                <TextInput
+                  source=""
+                  label="Image URL"
+                  validate={validateUrl}
+                  fullWidth
+                  helperText="Enter full URL to image"
+                />
+                <FormDataConsumer>
+                  {({ formData }) => {
+                    // Получаем провинцию и город из основной формы
+                    const selectedProvince = formData.address?.province;
+                    const selectedCity = formData.address?.city;
 
-                  // Строим фильтр для изображений
-                  const imageFilter: any = {};
-                  if (selectedProvince) {
-                    imageFilter.Province = selectedProvince;
-                  }
-                  if (selectedCity) {
-                    imageFilter.City = selectedCity;
-                  }
+                    // Строим фильтр для изображений
+                    const imageFilter: any = {};
+                    if (selectedProvince) {
+                      imageFilter.Province = selectedProvince;
+                    }
+                    if (selectedCity) {
+                      imageFilter.City = selectedCity;
+                    }
 
-                  const { data: images = [], isLoading: isImagesLoading } =
-                    useGetList("images", {
-                      pagination: { page: 1, perPage: 100 },
-                      sort: { field: "ImageName", order: "ASC" },
-                      filter: selectedProvince ? imageFilter : {},
+                    const { data: images = [], isLoading: isImagesLoading } =
+                      useGetList("images", {
+                        pagination: { page: 1, perPage: 100 },
+                        sort: { field: "ImageName", order: "ASC" },
+                        filter: selectedProvince ? imageFilter : {},
+                      });
+
+                    const imageChoices = images.map((img: any) => {
+                      // Создаем полный URL как в images-show.tsx
+                      const cleanPath = img.FilePath
+                        ? img.FilePath.replace(/^\/+/, "")
+                        : "";
+                      const fullImageUrl = cleanPath
+                        ? `${API_URL}/images/${cleanPath}`
+                        : "";
+
+                      return {
+                        id: fullImageUrl, // Сохраняем полный URL
+                        name: img.ImageName || img.url || img.src,
+                        place: img.Place,
+                        city: img.City,
+                        province: img.Province,
+                        src: fullImageUrl,
+                      };
                     });
 
-                  const imageChoices = images.map((img: any) => {
-                    // Создаем полный URL как в images-show.tsx
-                    const cleanPath = img.FilePath
-                      ? img.FilePath.replace(/^\/+/, "")
-                      : "";
-                    const fullImageUrl = cleanPath
-                      ? `${API_URL}/images/${cleanPath}`
-                      : "";
-
-                    return {
-                      id: fullImageUrl, // Сохраняем полный URL
-                      name: img.ImageName || img.url || img.src,
-                      place: img.Place,
-                      city: img.City,
-                      province: img.Province,
-                      src: fullImageUrl,
-                    };
-                  });
-
-                  return (
-                    <SelectInput
-                      source=""
-                      label={`Select from uploaded images${selectedProvince ? ` (${selectedProvince}${selectedCity ? `, ${selectedCity}` : ""})` : ""}`}
-                      choices={imageChoices}
-                      disabled={isImagesLoading}
-                      fullWidth
-                      allowEmpty
-                      helperText={
-                        !selectedProvince
-                          ? "Please select province first to filter images"
-                          : selectedCity
-                            ? `Showing images from ${selectedCity}, ${selectedProvince}`
-                            : `Showing images from ${selectedProvince}`
-                      }
-                      optionText={(choice) => (
-                        <span
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                          }}
-                        >
-                          {choice.src && (
-                            <img
-                              src={choice.src}
-                              alt={choice.name}
-                              style={{
-                                width: 32,
-                                height: 32,
-                                objectFit: "cover",
-                                borderRadius: 4,
-                              }}
-                            />
-                          )}
-                          <span>
-                            <b>{choice.name}</b>
-                            <br />
-                            <span style={{ fontSize: 12, color: "#888" }}>
-                              {choice.place ? `Place: ${choice.place}, ` : ""}
-                              {choice.city ? `City: ${choice.city}, ` : ""}
-                              {choice.province
-                                ? `Province: ${choice.province}`
-                                : ""}
+                    return (
+                      <SelectInput
+                        source=""
+                        label={`Select from uploaded images${selectedProvince ? ` (${selectedProvince}${selectedCity ? `, ${selectedCity}` : ""})` : ""}`}
+                        choices={imageChoices}
+                        disabled={isImagesLoading}
+                        fullWidth
+                        allowEmpty
+                        helperText={
+                          !selectedProvince
+                            ? "Please select province first to filter images"
+                            : selectedCity
+                              ? `Showing images from ${selectedCity}, ${selectedProvince}`
+                              : `Showing images from ${selectedProvince}`
+                        }
+                        optionText={(choice) => (
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                            }}
+                          >
+                            {choice.src && (
+                              <img
+                                src={choice.src}
+                                alt={choice.name}
+                                style={{
+                                  width: 32,
+                                  height: 32,
+                                  objectFit: "cover",
+                                  borderRadius: 4,
+                                }}
+                              />
+                            )}
+                            <span>
+                              <b>{choice.name}</b>
+                              <br />
+                              <span style={{ fontSize: 12, color: "#888" }}>
+                                {choice.place ? `Place: ${choice.place}, ` : ""}
+                                {choice.city ? `City: ${choice.city}, ` : ""}
+                                {choice.province
+                                  ? `Province: ${choice.province}`
+                                  : ""}
+                              </span>
                             </span>
                           </span>
-                        </span>
-                      )}
-                      optionValue="id" // Сохраняется полный URL
-                    />
-                  );
-                }}
-              </FormDataConsumer>
-            </SimpleFormIterator>
-          </ArrayInput>
-          <TextInput
-            source="preview_link"
-            label="Preview Link"
-            validate={validateUrl}
-            fullWidth
-            helperText="Link to preview the place"
-          />
+                        )}
+                        optionValue="id" // Сохраняется полный URL
+                      />
+                    );
+                  }}
+                </FormDataConsumer>
+              </SimpleFormIterator>
+            </ArrayInput>
+            <TextInput
+              source="preview_link"
+              label="Preview Link"
+              validate={validateUrl}
+              fullWidth
+              helperText="Link to preview the place"
+            />
+          </div>
         </FormTab>
 
         <FormTab label="Tags">
-          <ArrayInput source="tags" label="Tags">
-            <SimpleFormIterator>
-              <SelectInput
-                source=""
-                label="Tag"
-                choices={tags.map((tag: any) => ({
-                  id: tag.url || tag.name_en,
-                  name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
-                }))}
-                allowEmpty
-                fullWidth
-                disabled={isTagsLoading}
-                helperText="Выберите тег из списка"
-                optionText="name"
-                optionValue="id"
-              />
-            </SimpleFormIterator>
-          </ArrayInput>
+          <div style={{ maxWidth: 500 }}>
+            <ArrayInput source="tags" label="Tags">
+              <SimpleFormIterator>
+                <SelectInput
+                  source=""
+                  label="Tag"
+                  choices={tags.map((tag: any) => ({
+                    id: tag.url || tag.name_en,
+                    name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
+                  }))}
+                  allowEmpty
+                  fullWidth
+                  disabled={isTagsLoading}
+                  helperText="Выберите тег из списка"
+                  optionText="name"
+                  optionValue="id"
+                />
+              </SimpleFormIterator>
+            </ArrayInput>
+          </div>
         </FormTab>
 
         <FormTab label="Keywords">
-          <ArrayInput source="keywords" label="Keywords">
-            <SimpleFormIterator
-              disableReordering={false}
-              disableAdd={false}
-              disableRemove={false}
-            >
-              <TextInput source="" label="Keyword" fullWidth />
-            </SimpleFormIterator>
-          </ArrayInput>
+          <div style={{ maxWidth: 500 }}>
+            <ArrayInput source="keywords" label="Keywords">
+              <SimpleFormIterator
+                disableReordering={false}
+                disableAdd={false}
+                disableRemove={false}
+              >
+                <TextInput source="" label="Keyword" fullWidth />
+              </SimpleFormIterator>
+            </ArrayInput>
+          </div>
         </FormTab>
 
         <FormTab label="Schedule">
