@@ -35,6 +35,7 @@ import { ImagesCreate } from "./pages/images/images-create";
 import { PlacesList } from "./pages/places/places-list";
 import { PlacesShow } from "./pages/places/places-show";
 import { PlacesCreate } from "./pages/places/places-create";
+import { PlacesEdit } from "./pages/places/places-edit";
 
 export const App = () => (
   <Admin
@@ -93,6 +94,7 @@ export const App = () => (
       list={PlacesList}
       show={PlacesShow}
       create={PlacesCreate}
+      edit={PlacesEdit}
       options={{ mutationMode: "pessimistic" }}
     />
   </Admin>
