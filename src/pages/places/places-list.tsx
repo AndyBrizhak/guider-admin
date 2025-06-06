@@ -19,6 +19,21 @@ const placeFilters = [
   <TextInput label="Status" source="status" />, // добавлен фильтр по статусу
 ];
 
+const statusColor = (status: string) => {
+  switch (status) {
+    case "active":
+      return "green";
+    case "inactive":
+      return "gray";
+    case "draft":
+      return "goldenrod";
+    case "pending":
+      return "red";
+    default:
+      return "inherit";
+  }
+};
+
 export const PlacesList = () => (
   <List filters={placeFilters} resource="places">
     <Datagrid rowClick="show">
@@ -39,7 +54,11 @@ export const PlacesList = () => (
       <TextField source="category" label="Category" />
       <FunctionField
         label="Status"
-        render={(record: any) => record.status ?? ""}
+        render={(record: any) => (
+          <span style={{ color: statusColor(record.status) }}>
+            {record.status ?? ""}
+          </span>
+        )}
         sortBy="status"
         sortable={true}
       />
