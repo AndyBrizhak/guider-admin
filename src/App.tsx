@@ -36,7 +36,7 @@ import { PlacesList } from "./pages/places/places-list";
 import { PlacesShow } from "./pages/places/places-show";
 import { PlacesCreate } from "./pages/places/places-create";
 import { PlacesEdit } from "./pages/places/places-edit";
-import PlaceIcon from "@mui/icons-material/Place"; // Добавьте импорт для places
+import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory"; // Новая уникальная иконка для places
 
 export const App = () => (
   <Admin
@@ -92,7 +92,7 @@ export const App = () => (
     />
     <Resource
       name="places"
-      icon={PublicIcon} // Вернули старую иконку для places
+      icon={StoreMallDirectoryIcon} // Уникальная иконка для заведений
       list={PlacesList}
       show={PlacesShow}
       create={PlacesCreate}
