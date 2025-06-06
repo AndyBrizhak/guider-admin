@@ -10,13 +10,16 @@ const urlSlugValidator = [
 export const ProvinceCreate = () => (
   <Create title="Create Province" disableAuthentication>
     <SimpleForm>
-      <TextInput source="name" validate={required()} />
-      <TextInput
-        source="url"
-        label="URL Slug"
-        validate={urlSlugValidator}
-        helperText="Часть URL для страниц, связанных с провинцией"
-      />
+      <div style={{ maxWidth: 350 }}>
+        <TextInput source="name" validate={required()} fullWidth />
+        <TextInput
+          source="url"
+          label="URL Slug"
+          validate={urlSlugValidator}
+          helperText="Часть URL для страниц, связанных с провинцией"
+          fullWidth
+        />
+      </div>
     </SimpleForm>
   </Create>
 );
