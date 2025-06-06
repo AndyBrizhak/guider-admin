@@ -1,23 +1,15 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-key */
-import {
-  Datagrid,
-  List,
-  TextField,
-  EditButton,
-  TextInput,
-  ShowButton,
-  SelectInput,
-} from "react-admin";
+import { Datagrid, List, TextField, TextInput, SelectInput } from "react-admin";
 
 const tagFilters = [
   <TextInput label="Search" source="q" alwaysOn />,
   <TextInput label="Name (EN)" source="name_en" defaultValue="" />,
   <TextInput label="Name (SP)" source="name_sp" defaultValue="" />,
   <TextInput label="URL Slug" source="url" defaultValue="" />,
-  <SelectInput 
-    label="Type" 
-    source="type" 
+  <SelectInput
+    label="Type"
+    source="type"
     choices={[
       { id: "Features", name: "Features" },
       { id: "Main", name: "Main" },
@@ -34,8 +26,6 @@ export const TagList = () => (
       <TextField source="name_sp" label="Name (SP)" />
       <TextField source="url" label="URL Slug" />
       <TextField source="type" label="Type" />
-      <ShowButton label="Show" />
-      <EditButton label="Edit" />
     </Datagrid>
   </List>
 );
