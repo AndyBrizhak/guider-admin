@@ -222,6 +222,21 @@ const DescriptionDisplay = ({ record }: { record: any }) => {
   return <div dangerouslySetInnerHTML={{ __html: description }} />;
 };
 
+const statusColor = (status: string) => {
+  switch (status) {
+    case "active":
+      return "green";
+    case "inactive":
+      return "gray";
+    case "draft":
+      return "goldenrod";
+    case "pending":
+      return "red";
+    default:
+      return "inherit";
+  }
+};
+
 export const PlacesShow = () => (
   <Show>
     <TabbedShowLayout>
@@ -254,7 +269,14 @@ export const PlacesShow = () => (
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ minWidth: 120, fontWeight: 500 }}>Status:</span>
-              <TextField source="status" label={false} />
+              <FunctionField
+                label={false}
+                render={(record: any) => (
+                  <span style={{ color: statusColor(record.status) }}>
+                    {record.status ?? ""}
+                  </span>
+                )}
+              />
             </div>
           </div>
         </div>
