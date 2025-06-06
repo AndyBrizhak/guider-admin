@@ -43,22 +43,6 @@ export const ImagesList = () => (
       <TextField source="Place" label="Place" />
       <TextField source="City" label="City" />
       <TextField source="Province" label="Province" />
-      <FunctionField
-        label="Image URL"
-        render={(record: any) => {
-          const cleanPath = record.FilePath
-            ? record.FilePath.replace(/^\/+/, "")
-            : "";
-          const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
-          return imageUrl ? (
-            <a href={imageUrl} target="_blank" rel="noopener noreferrer">
-              {imageUrl}
-            </a>
-          ) : (
-            ""
-          );
-        }}
-      />
     </Datagrid>
   </List>
 );
