@@ -1,4 +1,4 @@
-import { Edit, WizardForm, TextInput, SelectInput } from "react-admin";
+import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
 
 const roleChoices = [
   { id: "user", name: "user" },
@@ -9,7 +9,7 @@ const roleChoices = [
 
 export const UserEdit = () => (
   <Edit>
-    <WizardForm
+    <SimpleForm
       style={{
         width: "75vw",
         maxWidth: "75vw",
@@ -19,18 +19,9 @@ export const UserEdit = () => (
         gap: 24,
       }}
     >
-      <WizardForm.Step label="User Info">
-        <TextInput source="username" label="Username" fullWidth />
-        <TextInput source="email" label="Email" fullWidth />
-      </WizardForm.Step>
-      <WizardForm.Step label="Role">
-        <SelectInput
-          source="role"
-          label="Role"
-          choices={roleChoices}
-          fullWidth
-        />
-      </WizardForm.Step>
-    </WizardForm>
+      <TextInput source="username" label="Username" fullWidth />
+      <TextInput source="email" label="Email" fullWidth />
+      <SelectInput source="role" label="Role" choices={roleChoices} fullWidth />
+    </SimpleForm>
   </Edit>
 );

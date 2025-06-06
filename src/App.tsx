@@ -5,7 +5,7 @@ import { UserList } from "./pages/users/user-list";
 import { UserCreate } from "./pages/users/user-create";
 import { UserEdit } from "./pages/users/user-edit";
 import PersonIcon from "@mui/icons-material/Person";
-import PublicIcon from "@mui/icons-material/Public"; // Иконка для провинций
+import PublicIcon from "@mui/icons-material/Public"; // Используйте эту иконку для places, как раньше
 import LocationCityIcon from "@mui/icons-material/LocationCity"; // Иконка для городов
 import LocalOfferIcon from "@mui/icons-material/LocalOffer"; // Иконка для тегов
 import { HomePage } from "./pages/homepage";
@@ -36,6 +36,7 @@ import { PlacesList } from "./pages/places/places-list";
 import { PlacesShow } from "./pages/places/places-show";
 import { PlacesCreate } from "./pages/places/places-create";
 import { PlacesEdit } from "./pages/places/places-edit";
+import PlaceIcon from "@mui/icons-material/Place"; // Добавьте импорт для places
 
 export const App = () => (
   <Admin
@@ -91,6 +92,7 @@ export const App = () => (
     />
     <Resource
       name="places"
+      icon={PublicIcon} // Вернули старую иконку для places
       list={PlacesList}
       show={PlacesShow}
       create={PlacesCreate}
