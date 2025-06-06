@@ -4,10 +4,12 @@ import { dataProvider } from "./dataProvider";
 import { UserList } from "./pages/users/user-list";
 import { UserCreate } from "./pages/users/user-create";
 import { UserEdit } from "./pages/users/user-edit";
-import PersonIcon from "@mui/icons-material/Person";
-import PublicIcon from "@mui/icons-material/Public"; // Используйте эту иконку для places, как раньше
-import LocationCityIcon from "@mui/icons-material/LocationCity"; // Иконка для городов
-import LocalOfferIcon from "@mui/icons-material/LocalOffer"; // Иконка для тегов
+import PersonIcon from "@mui/icons-material/Person"; // users
+import PublicIcon from "@mui/icons-material/Public"; // provinces
+import LocationCityIcon from "@mui/icons-material/LocationCity"; // cities
+import LocalOfferIcon from "@mui/icons-material/LocalOffer"; // tags
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary"; // images
+import StorefrontIcon from "@mui/icons-material/Storefront"; // places (уникальная для заведений)
 import { HomePage } from "./pages/homepage";
 import { authProvider } from "./authProvider";
 import { UserShow } from "./pages/users/user-show";
@@ -36,7 +38,6 @@ import { PlacesList } from "./pages/places/places-list";
 import { PlacesShow } from "./pages/places/places-show";
 import { PlacesCreate } from "./pages/places/places-create";
 import { PlacesEdit } from "./pages/places/places-edit";
-import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory"; // Новая уникальная иконка для places
 
 export const App = () => (
   <Admin
@@ -85,6 +86,7 @@ export const App = () => (
     />
     <Resource
       name="images"
+      icon={PhotoLibraryIcon}
       list={ImagesList}
       show={ImagesShow}
       create={ImagesCreate}
@@ -92,7 +94,7 @@ export const App = () => (
     />
     <Resource
       name="places"
-      icon={StoreMallDirectoryIcon} // Уникальная иконка для заведений
+      icon={StorefrontIcon} // Уникальная иконка для заведений
       list={PlacesList}
       show={PlacesShow}
       create={PlacesCreate}
