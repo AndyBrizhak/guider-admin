@@ -52,6 +52,21 @@ const validateLongitude = (value: number) => {
   return undefined;
 };
 
+const statusColor = (status: string) => {
+  switch (status) {
+    case "active":
+      return "green";
+    case "inactive":
+      return "gray";
+    case "draft":
+      return "goldenrod";
+    case "pending":
+      return "red";
+    default:
+      return "inherit";
+  }
+};
+
 export const PlacesCreate = () => {
   // Получаем список провинций из ресурса "provinces"
   const { data: provinces = [], isLoading: isProvincesLoading } = useGetList(
@@ -168,6 +183,11 @@ export const PlacesCreate = () => {
               { id: "draft", name: "Draft" },
             ]}
             fullWidth
+            optionText={(choice) => (
+              <span style={{ color: statusColor(choice.id) }}>
+                {choice.name}
+              </span>
+            )}
           />
         </FormTab>
 
