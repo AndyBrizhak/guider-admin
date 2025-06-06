@@ -251,10 +251,7 @@ export const PlacesShow = () => (
               gap: 12,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ minWidth: 120, fontWeight: 500 }}>ID:</span>
-              <TextField source="id" label={false} />
-            </div>
+            {/* Удалён блок с ID */}
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ minWidth: 120, fontWeight: 500 }}>Name:</span>
               <TextField source="name" label={false} />
