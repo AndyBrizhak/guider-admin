@@ -9,10 +9,19 @@ const roleChoices = [
 
 export const UserEdit = () => (
   <Edit>
-    <SimpleForm>
-      <TextInput source="username" />
-      <TextInput source="email" />
-      <SelectInput source="role" choices={roleChoices} />
+    <SimpleForm
+      style={{
+        width: "75vw",
+        maxWidth: "75vw",
+        marginRight: "10vw",
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+      }}
+    >
+      <TextInput source="username" label="Username" fullWidth />
+      <TextInput source="email" label="Email" fullWidth />
+      <SelectInput source="role" label="Role" choices={roleChoices} fullWidth />
     </SimpleForm>
   </Edit>
 );
