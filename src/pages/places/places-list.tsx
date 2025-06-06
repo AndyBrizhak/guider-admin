@@ -7,7 +7,6 @@ import {
   TextField,
   TextInput,
   FunctionField,
-  UrlField,
 } from "react-admin";
 
 const placeFilters = [
@@ -15,7 +14,6 @@ const placeFilters = [
   <TextInput label="Province" source="province" />,
   <TextInput label="City" source="city" />,
   <TextInput label="Name" source="name" />,
-  <TextInput label="URL" source="url" />,
   <TextInput label="Status" source="status" />, // добавлен фильтр по статусу
 ];
 
@@ -50,7 +48,6 @@ export const PlacesList = () => (
         sortBy="address.province"
         sortable={true}
       />
-      <UrlField source="url" label="URL" target="_blank" />
       <TextField source="category" label="Category" />
       <FunctionField
         label="Status"
