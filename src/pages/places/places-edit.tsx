@@ -28,9 +28,13 @@ const validateRequired = required("This field is required");
 const validateEmail = email("Please enter a valid email address");
 const validateUrl = (value: string) => {
   if (!value) return undefined;
-  const urlPattern =
-    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-  return urlPattern.test(value) ? undefined : "Please enter a valid URL";
+  try {
+    // Проверяем, что это корректный URL (допускает спецсимволы, параметры и т.д.)
+    new URL(value);
+    return undefined;
+  } catch {
+    return "Please enter a valid URL";
+  }
 };
 
 const validateCoordinate = (value: number) => {
