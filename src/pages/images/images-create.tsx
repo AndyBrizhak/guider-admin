@@ -9,6 +9,7 @@ import {
   FileInput,
   FileField,
   SelectInput,
+  AutocompleteInput,
   useGetList,
   regex,
   FormDataConsumer,
@@ -17,11 +18,6 @@ import {
 const urlSlugValidator = regex(
   /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
   "Image Name must contain only lowercase letters, numbers, and hyphens",
-);
-
-const placeSlugValidator = regex(
-  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-  "Place must contain only lowercase letters, numbers, and hyphens",
 );
 
 export const ImagesCreate = () => {
@@ -66,7 +62,7 @@ export const ImagesCreate = () => {
           {({ formData, ...rest }) => {
             const { data: cities = [], isLoading: isCitiesLoading } =
               useGetList("cities", {
-                pagination: { page: 1, perPage: 100 },
+                pagination: { page: 1, perPage: 1000000 },
                 sort: { field: "name", order: "ASC" },
                 filter: formData.Province
                   ? { province: formData.Province }
@@ -112,7 +108,7 @@ export const ImagesCreate = () => {
 
             const { data: places = [], isLoading: isPlacesLoading } =
               useGetList("places", {
-                pagination: { page: 1, perPage: 100 },
+                pagination: { page: 1, perPage: 1000000 }, // Увеличили лимит до 1 млн
                 sort: { field: "name", order: "ASC" },
                 filter: formData.Province ? placeFilter : {},
               });
@@ -123,7 +119,7 @@ export const ImagesCreate = () => {
             }));
 
             return (
-              <SelectInput
+              <AutocompleteInput
                 source="Place"
                 choices={placeChoices}
                 optionText="name"
@@ -133,10 +129,13 @@ export const ImagesCreate = () => {
                   !formData.Province
                     ? "Сначала выберите провинцию"
                     : formData.City
-                      ? `Места в городе ${formData.City}`
-                      : `Все места в провинции ${formData.Province}`
+                      ? `Заведения в городе ${formData.City}`
+                      : `Все заведения в провинции ${formData.Province}`
                 }
-                validate={required()}
+                // Убрали валидацию required() - поле теперь необязательное
+                filterToQuery={(searchText) => ({ q: searchText })}
+                noOptionsText="Заведения не найдены"
+                loadingText="Загрузка заведений..."
               />
             );
           }}
