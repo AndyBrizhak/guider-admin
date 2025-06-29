@@ -28,7 +28,7 @@ export const ImagesList = () => (
           const cleanPath = record.FilePath
             ? record.FilePath.replace(/^\/+/, "")
             : "";
-          const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
+          const imageUrl = cleanPath ? `${cleanPath}` : "";
           return imageUrl ? (
             <img
               src={imageUrl}
