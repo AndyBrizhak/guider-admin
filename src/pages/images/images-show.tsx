@@ -12,7 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL || "https://localhost:7001";
 
 const ImagePreview = ({ record }: { record: any }) => {
   const cleanPath = record?.FilePath ? record.FilePath.replace(/^\/+/, "") : "";
-  const imageUrl = cleanPath ? `${API_URL}/images/${cleanPath}` : "";
+  const imageUrl = cleanPath ? `${cleanPath}` : "";
   return imageUrl ? (
     <img
       src={imageUrl}
@@ -94,9 +94,7 @@ export const ImagesShow = () => (
                   const cleanPath = record.FilePath
                     ? record.FilePath.replace(/^\/+/, "")
                     : "";
-                  const imageUrl = cleanPath
-                    ? `${API_URL}/images/${cleanPath}`
-                    : "";
+                  const imageUrl = cleanPath ? `${cleanPath}` : "";
                   return imageUrl ? (
                     <a
                       href={imageUrl}
