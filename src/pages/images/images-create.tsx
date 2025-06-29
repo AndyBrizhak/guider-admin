@@ -48,14 +48,16 @@ export const ImagesCreate = () => {
           <FileField source="src" title="title" />
         </FileInput>
 
-        <SelectInput
+        <AutocompleteInput
           source="Province"
           choices={provinceChoices}
           optionText="name"
           optionValue="id"
           disabled={isProvincesLoading}
-          helperText="Выберите провинцию"
-          validate={required()}
+          helperText="Выберите провинцию (необязательно)"
+          filterToQuery={(searchText) => ({ q: searchText })}
+          noOptionsText="Провинции не найдены"
+          loadingText="Загрузка провинций..."
         />
 
         <FormDataConsumer>
@@ -75,7 +77,7 @@ export const ImagesCreate = () => {
             }));
 
             return (
-              <SelectInput
+              <AutocompleteInput
                 source="City"
                 choices={cityChoices}
                 optionText="name"
@@ -83,9 +85,12 @@ export const ImagesCreate = () => {
                 disabled={isCitiesLoading || !formData.Province}
                 helperText={
                   !formData.Province
-                    ? "Сначала выберите провинцию"
+                    ? "Сначала выберите провинцию для выбора города"
                     : "Выберите город (необязательно)"
                 }
+                filterToQuery={(searchText) => ({ q: searchText })}
+                noOptionsText="Города не найдены"
+                loadingText="Загрузка городов..."
               />
             );
           }}
@@ -96,7 +101,7 @@ export const ImagesCreate = () => {
             // Строим фильтр для places
             const placeFilter: any = {};
 
-            // Фильтр по провинции (обязательно)
+            // Фильтр по провинции (только если выбрана)
             if (formData.Province) {
               placeFilter["address.province"] = formData.Province;
             }
@@ -108,7 +113,7 @@ export const ImagesCreate = () => {
 
             const { data: places = [], isLoading: isPlacesLoading } =
               useGetList("places", {
-                pagination: { page: 1, perPage: 1000000 }, // Увеличили лимит до 1 млн
+                pagination: { page: 1, perPage: 1000000 },
                 sort: { field: "name", order: "ASC" },
                 filter: formData.Province ? placeFilter : {},
               });
@@ -127,12 +132,11 @@ export const ImagesCreate = () => {
                 disabled={isPlacesLoading || !formData.Province}
                 helperText={
                   !formData.Province
-                    ? "Сначала выберите провинцию"
+                    ? "Сначала выберите провинцию для выбора заведения"
                     : formData.City
-                      ? `Заведения в городе ${formData.City}`
-                      : `Все заведения в провинции ${formData.Province}`
+                      ? `Заведения в городе ${formData.City} (необязательно)`
+                      : `Заведения в провинции ${formData.Province} (необязательно)`
                 }
-                // Убрали валидацию required() - поле теперь необязательное
                 filterToQuery={(searchText) => ({ q: searchText })}
                 noOptionsText="Заведения не найдены"
                 loadingText="Загрузка заведений..."
