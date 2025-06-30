@@ -33,7 +33,8 @@ import { TagEdit } from "./pages/tags/tag-edit.tsx";
 import { ImagesList } from "./pages/images/images-list";
 import { ImagesShow } from "./pages/images/images-show";
 import { ImagesCreate } from "./pages/images/images-create";
-
+import { ImagesUpdate } from "./pages/images/images-update";
+// Импорт компонентов для заведений
 import { PlacesList } from "./pages/places/places-list";
 import { PlacesShow } from "./pages/places/places-show";
 import { PlacesCreate } from "./pages/places/places-create";
@@ -90,6 +91,7 @@ export const App = () => (
       list={ImagesList}
       show={ImagesShow}
       create={ImagesCreate}
+      edit={ImagesUpdate}
       options={{ mutationMode: "pessimistic" }}
     />
     <Resource

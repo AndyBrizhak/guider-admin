@@ -76,6 +76,72 @@ export const dataProvider: DataProvider = {
     return { data: response.json, total: response.json.length };
   },
   update: async (resource, params) => {
+    // Специальная обработка только для images с файлом или multipart данными
+    if (
+      resource === "images" &&
+      (params.data.newImageFile || hasImageUpdateData(params.data))
+    ) {
+      console.log("Updating image with params:", params.data);
+
+      const formData = new FormData();
+
+      // Добавляем новый файл изображения, если он есть
+      if (params.data.newImageFile) {
+        const file =
+          params.data.newImageFile.rawFile || params.data.newImageFile;
+
+        if (file instanceof File) {
+          formData.append("newImageFile", file);
+        }
+      }
+
+      // Добавляем остальные поля, если они переданы (только непустые значения)
+      if (params.data.newImageName) {
+        formData.append("newImageName", params.data.newImageName);
+      }
+      if (params.data.province) {
+        formData.append("province", params.data.province);
+      }
+      if (params.data.city) {
+        formData.append("city", params.data.city);
+      }
+      if (params.data.place) {
+        formData.append("place", params.data.place);
+      }
+      if (params.data.description) {
+        formData.append("description", params.data.description);
+      }
+      if (params.data.tags) {
+        formData.append("tags", params.data.tags);
+      }
+
+      // Создаем специальный запрос для multipart/form-data
+      const headers = new Headers();
+      const auth = localStorage.getItem("auth");
+      if (auth) {
+        const { token } = JSON.parse(auth);
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+
+      const url = `${API_URL}/images/${params.id}`;
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: headers,
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, body: ${errorText}`,
+        );
+      }
+
+      const json = await response.json();
+      return { data: json };
+    }
+
+    // Обычный JSON-запрос для всех остальных ресурсов (без изменений)
     const url = `${API_URL}/${resource}/${params.id}`;
     const response = await httpClient(url, {
       method: "PUT",
@@ -212,3 +278,15 @@ export const dataProvider: DataProvider = {
     return { data: responses.map((response) => response.json) };
   },
 };
+
+// Вспомогательная функция (добавить в конец файла)
+function hasImageUpdateData(data: any): boolean {
+  return !!(
+    data.newImageName ||
+    data.province ||
+    data.city ||
+    data.place ||
+    data.description ||
+    data.tags
+  );
+}
