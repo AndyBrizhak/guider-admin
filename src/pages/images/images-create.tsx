@@ -35,7 +35,7 @@ export const ImagesCreate = () => {
   }));
 
   return (
-    <Create title="Create Image">
+    <Create title="Create Image" redirect="show">
       <SimpleForm>
         <FileInput
           source="file"
