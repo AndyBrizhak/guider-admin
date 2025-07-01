@@ -67,7 +67,7 @@ export const ImagesUpdate = () => {
   };
 
   return (
-    <Edit title="Update Image" transform={transform}>
+    <Edit title="Update Image" redirect="show" transform={transform}>
       <SimpleForm>
         <FileInput
           source="newImageFile"
