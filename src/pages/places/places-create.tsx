@@ -398,20 +398,53 @@ export const PlacesCreate = () => {
         <FormTab label="Tags">
           <ArrayInput source="tags" label="Tags">
             <SimpleFormIterator>
-              <SelectInput
-                source=""
-                label="Tag"
-                choices={tags.map((tag: any) => ({
-                  id: tag.url || tag.name_en,
-                  name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
-                }))}
-                allowEmpty
-                fullWidth
-                disabled={isTagsLoading}
-                helperText="Выберите тег из списка"
-                optionText="name"
-                optionValue="id"
-              />
+              <FormDataConsumer>
+                {({ getSource, scopedFormData, formData }) => {
+                  // Получаем уже выбранные теги
+                  const selectedTags = (formData?.tags || []).map((tag: any) =>
+                    typeof tag === "string" ? tag : tag?.id,
+                  );
+
+                  // Фильтруем доступные теги, чтобы не показывать уже выбранные
+                  const availableTags = tags
+                    .map((tag: any) => ({
+                      id: tag.url || tag.name_en,
+                      name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
+                    }))
+                    .filter((tag: any) => !selectedTags.includes(tag.id));
+
+                  // Если редактируем существующий тег, добавляем его обратно в список
+                  const currentTagId = scopedFormData?.id || scopedFormData;
+                  if (
+                    currentTagId &&
+                    !availableTags.find((tag: any) => tag.id === currentTagId)
+                  ) {
+                    const currentTag = tags.find(
+                      (tag: any) => (tag.url || tag.name_en) === currentTagId,
+                    );
+                    if (currentTag) {
+                      availableTags.push({
+                        id: currentTag.url || currentTag.name_en,
+                        name: `${currentTag.name_en}${currentTag.name_sp ? ` / ${currentTag.name_sp}` : ""} (${currentTag.type})`,
+                      });
+                    }
+                  }
+
+                  return (
+                    <SelectInput
+                      source={getSource ? getSource("") : ""}
+                      label="Tag"
+                      choices={availableTags}
+                      allowEmpty
+                      fullWidth
+                      disabled={isTagsLoading}
+                      helperText="Выберите тег из списка"
+                      optionText="name"
+                      optionValue="id"
+                    />
+                  );
+                }}
+              </FormDataConsumer>
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
