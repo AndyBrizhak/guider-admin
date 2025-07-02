@@ -451,7 +451,7 @@ export const PlacesEdit = () => {
         </FormTab>
 
         <FormTab label="Tags">
-          <div style={{ maxWidth: 500 }}>
+          <div style={{ maxWidth: "50vw" }}>
             <ArrayInput source="tags" label="Tags">
               <SimpleFormIterator>
                 <FormDataConsumer>
@@ -487,7 +487,8 @@ export const PlacesEdit = () => {
                     }
 
                     return (
-                      <SelectInput
+                      <AutocompleteInput
+                        style={{ minWidth: 350, width: "100%" }}
                         source={getSource ? getSource("") : ""}
                         label="Tag"
                         choices={availableTags}
