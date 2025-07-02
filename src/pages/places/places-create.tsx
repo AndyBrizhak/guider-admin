@@ -325,21 +325,15 @@ export const PlacesCreate = () => {
                     });
 
                   const imageChoices = images.map((img: any) => {
-                    // Создаем полный URL как в images-show.tsx
-                    const cleanPath = img.FilePath
-                      ? img.FilePath.replace(/^\/+/, "")
-                      : "";
-                    const fullImageUrl = cleanPath
-                      ? `${API_URL}/images/${cleanPath}`
-                      : "";
-
+                    // Теперь API возвращает полный путь, не нужно добавлять префикс локального хоста
+                    // Просто используем FilePath как есть
                     return {
-                      id: fullImageUrl, // Сохраняем полный URL
+                      id: img.FilePath || "", // используем полный путь из API
                       name: img.ImageName || img.url || img.src,
                       place: img.Place,
                       city: img.City,
                       province: img.Province,
-                      src: fullImageUrl,
+                      src: img.FilePath || "", // для превью также используем FilePath как есть
                     };
                   });
 
