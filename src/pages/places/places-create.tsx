@@ -231,7 +231,7 @@ export const PlacesCreate = () => {
               }));
 
               return (
-                <SelectInput
+                <AutocompleteInput
                   source="address.city"
                   label="City"
                   choices={cityChoices}
