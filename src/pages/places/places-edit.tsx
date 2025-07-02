@@ -17,6 +17,7 @@ import {
   useRedirect,
   useUpdate,
   useRecordContext,
+  AutocompleteInput,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -248,7 +249,7 @@ export const PlacesEdit = () => {
               defaultValue="Costa Rica"
               fullWidth
             />
-            <SelectInput
+            <AutocompleteInput
               source="address.province"
               label="Province/State"
               choices={provinceChoices}
