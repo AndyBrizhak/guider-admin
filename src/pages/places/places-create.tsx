@@ -432,7 +432,7 @@ export const PlacesCreate = () => {
                   }
 
                   return (
-                    <SelectInput
+                    <AutocompleteInput
                       source={getSource ? getSource("") : ""}
                       label="Tag"
                       choices={availableTags}
