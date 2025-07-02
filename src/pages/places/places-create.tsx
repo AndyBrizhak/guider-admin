@@ -295,13 +295,7 @@ export const PlacesCreate = () => {
               disableAdd={false}
               disableRemove={false}
             >
-              <TextInput
-                source=""
-                label="Image URL"
-                validate={validateUrl}
-                fullWidth
-                helperText="Enter full URL to image"
-              />
+              {/* Удалён ручной ввод ссылки на изображение */}
               <FormDataConsumer>
                 {({ formData }) => {
                   // Получаем провинцию и город из основной формы

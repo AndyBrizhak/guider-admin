@@ -349,13 +349,7 @@ export const PlacesEdit = () => {
                 disableAdd={false}
                 disableRemove={false}
               >
-                <TextInput
-                  source=""
-                  label="Image URL"
-                  validate={validateUrl}
-                  fullWidth
-                  helperText="Enter full URL to image"
-                />
+                {/* Удалите ручной ввод ссылки, если не нужен */}
                 <FormDataConsumer>
                   {({ formData }) => {
                     // Получаем провинцию и город из основной формы
@@ -379,21 +373,14 @@ export const PlacesEdit = () => {
                       });
 
                     const imageChoices = images.map((img: any) => {
-                      // Создаем полный URL как в images-show.tsx
-                      const cleanPath = img.FilePath
-                        ? img.FilePath.replace(/^\/+/, "")
-                        : "";
-                      const fullImageUrl = cleanPath
-                        ? `${API_URL}/images/${cleanPath}`
-                        : "";
-
+                      // Используем полный путь из API без добавления префикса
                       return {
-                        id: fullImageUrl, // Сохраняем полный URL
+                        id: img.FilePath || "",
                         name: img.ImageName || img.url || img.src,
                         place: img.Place,
                         city: img.City,
                         province: img.Province,
-                        src: fullImageUrl,
+                        src: img.FilePath || "", // для превью также используем FilePath как есть
                       };
                     });
 
@@ -445,7 +432,7 @@ export const PlacesEdit = () => {
                             </span>
                           </span>
                         )}
-                        optionValue="id" // Сохраняется полный URL
+                        optionValue="id" // Сохраняется полный путь из API
                       />
                     );
                   }}
