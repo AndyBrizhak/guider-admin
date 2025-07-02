@@ -16,6 +16,7 @@ import {
   useNotify,
   useRedirect,
   useCreate,
+  AutocompleteInput,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -206,7 +207,7 @@ export const PlacesCreate = () => {
             defaultValue="Costa Rica"
             fullWidth
           />
-          <SelectInput
+          <AutocompleteInput
             source="address.province"
             label="Province/State"
             choices={provinceChoices}
