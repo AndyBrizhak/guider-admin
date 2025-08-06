@@ -17,6 +17,7 @@ import {
   useRedirect,
   useUpdate,
   useRecordContext,
+  AutocompleteInput,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
@@ -248,7 +249,7 @@ export const PlacesEdit = () => {
               defaultValue="Costa Rica"
               fullWidth
             />
-            <SelectInput
+            <AutocompleteInput
               source="address.province"
               label="Province/State"
               choices={provinceChoices}
@@ -272,7 +273,7 @@ export const PlacesEdit = () => {
                 }));
 
                 return (
-                  <SelectInput
+                  <AutocompleteInput
                     source="address.city"
                     label="City"
                     choices={cityChoices}
@@ -349,13 +350,7 @@ export const PlacesEdit = () => {
                 disableAdd={false}
                 disableRemove={false}
               >
-                <TextInput
-                  source=""
-                  label="Image URL"
-                  validate={validateUrl}
-                  fullWidth
-                  helperText="Enter full URL to image"
-                />
+                {/* Удалите ручной ввод ссылки, если не нужен */}
                 <FormDataConsumer>
                   {({ formData }) => {
                     // Получаем провинцию и город из основной формы
@@ -379,21 +374,14 @@ export const PlacesEdit = () => {
                       });
 
                     const imageChoices = images.map((img: any) => {
-                      // Создаем полный URL как в images-show.tsx
-                      const cleanPath = img.FilePath
-                        ? img.FilePath.replace(/^\/+/, "")
-                        : "";
-                      const fullImageUrl = cleanPath
-                        ? `${API_URL}/images/${cleanPath}`
-                        : "";
-
+                      // Используем полный путь из API без добавления префикса
                       return {
-                        id: fullImageUrl, // Сохраняем полный URL
+                        id: img.FilePath || "",
                         name: img.ImageName || img.url || img.src,
                         place: img.Place,
                         city: img.City,
                         province: img.Province,
-                        src: fullImageUrl,
+                        src: img.FilePath || "", // для превью также используем FilePath как есть
                       };
                     });
 
@@ -445,7 +433,7 @@ export const PlacesEdit = () => {
                             </span>
                           </span>
                         )}
-                        optionValue="id" // Сохраняется полный URL
+                        optionValue="id" // Сохраняется полный путь из API
                       />
                     );
                   }}
@@ -463,23 +451,57 @@ export const PlacesEdit = () => {
         </FormTab>
 
         <FormTab label="Tags">
-          <div style={{ maxWidth: 500 }}>
+          <div style={{ maxWidth: "50vw" }}>
             <ArrayInput source="tags" label="Tags">
               <SimpleFormIterator>
-                <SelectInput
-                  source=""
-                  label="Tag"
-                  choices={tags.map((tag: any) => ({
-                    id: tag.url || tag.name_en,
-                    name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
-                  }))}
-                  allowEmpty
-                  fullWidth
-                  disabled={isTagsLoading}
-                  helperText="Выберите тег из списка"
-                  optionText="name"
-                  optionValue="id"
-                />
+                <FormDataConsumer>
+                  {({ getSource, scopedFormData, formData }) => {
+                    // Получаем уже выбранные теги
+                    const selectedTags = (formData?.tags || []).map(
+                      (tag: any) => (typeof tag === "string" ? tag : tag?.id),
+                    );
+
+                    // Фильтруем доступные теги, чтобы не показывать уже выбранные
+                    const availableTags = tags
+                      .map((tag: any) => ({
+                        id: tag.url || tag.name_en,
+                        name: `${tag.name_en}${tag.name_sp ? ` / ${tag.name_sp}` : ""} (${tag.type})`,
+                      }))
+                      .filter((tag: any) => !selectedTags.includes(tag.id));
+
+                    // Если редактируем существующий тег, добавляем его обратно в список
+                    const currentTagId = scopedFormData?.id || scopedFormData;
+                    if (
+                      currentTagId &&
+                      !availableTags.find((tag: any) => tag.id === currentTagId)
+                    ) {
+                      const currentTag = tags.find(
+                        (tag: any) => (tag.url || tag.name_en) === currentTagId,
+                      );
+                      if (currentTag) {
+                        availableTags.push({
+                          id: currentTag.url || currentTag.name_en,
+                          name: `${currentTag.name_en}${currentTag.name_sp ? ` / ${currentTag.name_sp}` : ""} (${currentTag.type})`,
+                        });
+                      }
+                    }
+
+                    return (
+                      <AutocompleteInput
+                        style={{ minWidth: 350, width: "100%" }}
+                        source={getSource ? getSource("") : ""}
+                        label="Tag"
+                        choices={availableTags}
+                        allowEmpty
+                        fullWidth
+                        disabled={isTagsLoading}
+                        helperText="Выберите тег из списка"
+                        optionText="name"
+                        optionValue="id"
+                      />
+                    );
+                  }}
+                </FormDataConsumer>
               </SimpleFormIterator>
             </ArrayInput>
           </div>

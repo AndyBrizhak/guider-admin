@@ -345,13 +345,68 @@ export const PlacesShow = () => (
 
       {/* Media */}
       <Tab label="Media">
-        <div style={{ minWidth: 320, textAlign: "center" }}>
+        <div>
+          <h3 style={{ marginBottom: "12px", color: "#333" }}>Images</h3>
           <FunctionField
-            label=""
-            render={(record: any) => <ImageGallery record={record} />}
+            label={false}
+            render={(record: any) => {
+              const images = record?.img_link || [];
+              if (!images.length) return <span>No images available</span>;
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "32px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {images.map((url: string, idx: number) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        minWidth: 180,
+                      }}
+                    >
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#1976d2",
+                          textDecoration: "underline",
+                          wordBreak: "break-all",
+                          fontSize: "14px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {url}
+                      </a>
+                      <img
+                        src={url}
+                        alt={`Image ${idx + 1}`}
+                        style={{
+                          maxWidth: "160px",
+                          maxHeight: "120px",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          objectFit: "cover",
+                        }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              );
+            }}
           />
         </div>
-        <div>
+        <div style={{ marginTop: 24 }}>
           <h3 style={{ marginBottom: "12px", color: "#333" }}>Preview</h3>
           <FunctionField
             label={false}
